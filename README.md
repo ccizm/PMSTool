@@ -1,6 +1,6 @@
 # PMSTool
 
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 PMS工具箱是一款专为酒店PMS(PProperty Management System)系统设计的Chrome浏览器扩展，旨在帮助酒店工作人员提高工作效率，简化日常操作流程。该扩展集成了多种实用工具，包括结账单制作、房价计算器、常用信息查询等功能，并内置AI助手提供智能服务。
 
@@ -198,7 +198,7 @@ npm run build
 
 ## 📝 许可证
 
-本项目采用MIT许可证 - 详见[LICENSE](LICENSE)文件
+本项目采用Apache 2.0许可证 - 详见[LICENSE](LICENSE)文件
 
 ## 📞 联系我们
 
