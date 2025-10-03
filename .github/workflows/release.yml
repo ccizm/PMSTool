@@ -7,61 +7,88 @@ on:
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
+    name: 构建并上传发布产物
     
     steps:
+      # 步骤1: 检出代码
       - name: 检出代码
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 获取完整历史记录
 
+      # 步骤2: 设置 Node.js 环境
       - name: 设置 Node.js 环境
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
 
+      # 步骤3: 安装项目依赖
       - name: 安装依赖
         run: npm ci
 
+      # 步骤4: 运行构建脚本 (使用 build-no-zip)
       - name: 运行构建脚本
         run: npm run build-no-zip
 
-      - name: 检查构建输出
+      # 步骤5: 验证构建结果
+      - name: 验证构建输出
         run: |
-          echo "当前工作目录：$(pwd)"
-          echo "查看项目根目录内容："
-          ls -la
-          echo "查看 dist 目录内容："
+          echo "构建完成，当前工作目录: $(pwd)"
+          
+          # 检查 dist 目录是否存在
+          if [ ! -d "dist" ]; then
+            echo "错误: dist 目录不存在，构建失败！"
+            exit 1
+          fi
+          
+          echo "dist 目录内容："
           ls -la dist/
+          echo "dist 目录文件数量: $(ls -la dist/ | wc -l) 个"
+
+      # 步骤6: 手动打包构建产物
+      - name: 打包构建产物
+        run: |
+          # 定义打包文件名，使用标签名作为版本标识
+          PACKAGE_NAME="hpms-tool-${{ github.ref_name }}.zip"
+          echo "准备打包文件: $PACKAGE_NAME"
           
-          # 确认 ZIP 文件是否存在
-          echo "尝试查找所有 zip 文件："
-          find . -name "*.zip" -type f
+          # 进入 dist 目录并打包所有内容
+          cd dist
+          zip -r "../$PACKAGE_NAME" ./*
+          cd ..
           
-          # 显示完整路径
-          if compgen -G "dist/*.zip" > /dev/null; then
-            echo "找到的 zip 文件："
-            ls -la dist/*.zip
-            echo "当前标签：${{ github.ref }}"
+          # 验证打包结果
+          if [ -f "$PACKAGE_NAME" ]; then
+            echo "打包成功！文件大小: $(du -h "$PACKAGE_NAME" | cut -f1)"
+            ls -la "$PACKAGE_NAME"
           else
-            echo "ERROR: 没有找到任何 zip 文件！"
+            echo "错误: 打包失败，文件 $PACKAGE_NAME 不存在！"
             exit 1
           fi
 
+      # 步骤7: 上传构建产物到 GitHub Release
       - name: 上传构建产物到 Release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: "dist/*.zip"
-          file_glob: true
+          file: "hpms-tool-${{ github.ref_name }}.zip"
+          file_glob: false  # 不使用通配符，直接指定文件名
           tag: ${{ github.ref }}
           overwrite: true
+          asset_name: "hpms-tool-${{ github.ref_name }}.zip"
+          asset_content_type: "application/zip"
 
+  # 可选的通知作业
   notify:
     runs-on: ubuntu-latest
+    name: 发送构建完成通知
     needs: build-and-release
-    
     steps:
       - name: 通知构建完成
         run: |
-          echo "Chrome 扩展已成功构建并上传到 Release: ${{ github.ref }}"
-          echo "发布版本: ${{ github.event.release.name }}"
-          echo "发布描述: ${{ github.event.release.body }}"
+          echo "✅ Chrome 扩展已成功构建并上传到 Release"
+          echo "📝 发布版本: ${{ github.event.release.name || '未命名版本' }}"
+          echo "🔖 发布标签: ${{ github.ref_name }}"
+          echo "📅 发布时间: $(date)"
+          echo "💡 提示: 构建产物已上传至 Release 的 Assets 部分"
