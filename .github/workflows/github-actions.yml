@@ -37,7 +37,7 @@ jobs:
 
       # 构建项目
       - name: Build project
-        run: npm run build
+        run: npm run build-no-zip
 
       # 检查构建结果
       - name: Check build output
