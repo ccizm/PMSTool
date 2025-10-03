@@ -11,6 +11,7 @@
     "convert-psd": "node build-scripts/convert-psd.js",
     "build-zip": "node build-scripts/build-zip.js",
     "update-version": "node build-scripts/update-version.js",
+    "build-no-zip": "npm run update-version && npm run clean && npm run convert-psd && vite build",
     "build": "npm run update-version && npm run clean && npm run convert-psd && vite build && npm run build-zip"
   },
   "devDependencies": {
