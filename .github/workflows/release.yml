@@ -22,7 +22,7 @@ jobs:
         run: npm ci
 
       - name: 运行构建脚本
-        run: npm run build
+        run: npm run build-no-zip
 
       - name: 上传构建产物到 Release
         uses: svenstaro/upload-release-action@v2
