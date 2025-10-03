@@ -24,7 +24,7 @@ jobs:
         run: npm ci
 
       - name: 运行构建脚本
-        run: npm run build
+        run: npm run build-no-zip
 
       - name: 检查 dist 目录内容
         run: |
