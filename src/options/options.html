@@ -71,7 +71,7 @@
           <!-- 基础信息标签页 -->
           <div class="tab-content" id="basic">
             <h2 class="text-xl font-bold mb-4">酒店基本信息</h2>
-            <form id="HotelInfo" class="space-y-4">
+            <form id="HotelInfo" class="space-y-4 max-h-96 overflow-x-auto">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label for="SetHotelName" class="block text-sm font-medium text-gray-700 mb-1">酒店名称</label>
@@ -117,7 +117,7 @@
                 </button>
               </div>
             </div>
-            <div class="overflow-x-auto">
+            <div class="max-h-96 overflow-x-auto">
               <table id="ConsumptionTable" class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                   <tr>
@@ -148,7 +148,7 @@
                 </button>
               </div>
             </div>
-            <div class="overflow-x-auto">
+            <div class="max-h-96 overflow-x-auto">
               <table id="PaymentTable" class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                   <tr>
@@ -189,7 +189,7 @@
 
               </div>
             </div>
-            <div class="overflow-x-auto">
+            <div class="max-h-96 overflow-x-auto">
               <table id="VipTable" class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                   <tr>
@@ -228,8 +228,8 @@
                   </button>
                 </div>
                 <!-- 常用信息标题列表 -->
-                <div class="bg-gray-50 rounded-md h-[calc(100vh-240px)] overflow-y-auto">
-                  <ul id="CommonInfoList" class="divide-y divide-gray-200">
+                <div class="bg-gray-50 rounded-md overflow-y-auto">
+                  <ul id="CommonInfoList" class="divide-y divide-gray-200 max-h-96 overflow-x-auto">
                     <!-- 常用信息标题将通过JavaScript动态添加 -->
                   </ul>
                 </div>
@@ -263,7 +263,7 @@
           <!-- AI大模型设置标签页 -->
           <div class="tab-content hidden" id="ai">
             <h2 class="text-xl font-bold mb-4">AI大模型（OpenAI 兼容接口）</h2>
-            <form id="AISettings" class="space-y-4">
+            <form id="AISettings" class="space-y-4 max-h-96 overflow-x-auto">
               <div class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
@@ -271,56 +271,48 @@
                     <input type="text" id="AIModelType" class="input-field" placeholder="例如：doubao-1-5-pro-32k-250115">
                   </div>
                   <div>
-                    <label for="APIKey" class="block text-sm font-medium text-gray-700 mb-1">API Key （<a href="https://openapi.beida.xyz" target="_blank" class="text-blue-600 hover:text-blue-800">获取API Key</a>）</label>
+                    <label for="APIKey" class="block text-sm font-medium text-gray-700 mb-1">API Key （<a href="https://apikey.pmstool.beida.xyz" target="_blank" class="text-blue-600 hover:text-blue-800">获取API Key</a>）</label>
                     <input type="password" id="APIKey" class="input-field">
                   </div>
                 </div>
-                <div>
+                <div class="hidden">
                   <label for="APIBaseURL" class="block text-sm font-medium text-gray-700 mb-1">API基础URL</label>
-                  <input type="text" id="APIBaseURL" class="input-field w-full">
+                  <input type="text" id="APIBaseURL" class="input-field w-full" readonly>
                 </div>
               </div>
               
-              <!-- 高级设置切换按钮 -->
-              <div class="mt-4">
-                <button type="button" id="ToggleAdvancedSettings" class="flex items-center text-blue-600 hover:text-blue-800">
-                  <span>显示高级设置</span>
-                  <i class="ri-arrow-down-s-line text-base ml-1 transition-transform" id="advanced-settings-icon"></i>
-                </button>
-              </div>
-              
-              <!-- 高级设置区域（默认隐藏） -->
+              <!-- 高级设置区域（已隐藏并禁止编辑） -->
               <div id="AdvancedSettings" class="hidden">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label for="MaxTokens" class="block text-sm font-medium text-gray-700 mb-1">最大令牌数</label>
-                    <input type="number" id="MaxTokens" class="input-field">
+                    <input type="number" id="MaxTokens" class="input-field" readonly>
                   </div>
                   <div>
                     <label for="Temperature" class="block text-sm font-medium text-gray-700 mb-1">温度值 (0-2)</label>
-                    <input type="number" step="0.1" id="Temperature" class="input-field">
+                    <input type="number" step="0.1" id="Temperature" class="input-field" readonly>
                   </div>
                   <div>
                     <label for="TopP" class="block text-sm font-medium text-gray-700 mb-1">Top P (0-1)</label>
-                    <input type="number" step="0.1" id="TopP" class="input-field">
+                    <input type="number" step="0.1" id="TopP" class="input-field" readonly>
                   </div>
                   <div>
                     <label for="FrequencyPenalty" class="block text-sm font-medium text-gray-700 mb-1">频率惩罚 (0-2)</label>
-                    <input type="number" step="0.1" id="FrequencyPenalty" class="input-field">
+                    <input type="number" step="0.1" id="FrequencyPenalty" class="input-field" readonly>
                   </div>
                   <div>
                     <label for="PresencePenalty" class="block text-sm font-medium text-gray-700 mb-1">存在惩罚 (0-2)</label>
-                    <input type="number" step="0.1" id="PresencePenalty" class="input-field">
+                    <input type="number" step="0.1" id="PresencePenalty" class="input-field" readonly>
                   </div>
                   <div>
                     <label for="CacheExpirationMinutes" class="block text-sm font-medium text-gray-700 mb-1">缓存过期时间(分钟)</label>
-                    <input type="number" id="CacheExpirationMinutes" class="input-field">
+                    <input type="number" id="CacheExpirationMinutes" class="input-field" readonly>
                   </div>
                 </div>
                 
                 <div class="mt-4">
                   <div class="flex items-center space-x-2">
-                    <input type="checkbox" id="EnableCache" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                    <input type="checkbox" id="EnableCache" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" disabled>
                     <label for="EnableCache" class="ml-2 block text-sm text-gray-700">启用响应缓存</label>
                   </div>
                 </div>

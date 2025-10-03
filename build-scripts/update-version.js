@@ -30,17 +30,17 @@ let majorVersion = versionParts[0] || '1';
 // 生成新的版本号
 let newVersion;
 
-// 获取当天开始时间（00:00:00）的时间戳
-const todayStart = new Date(year, month - 1, day).getTime();
-// 计算从当天开始到现在的秒数作为时间戳（更简洁）
-const timestamp = Math.floor((Date.now() - todayStart) / 1000);
+// 获取当前的小时和分钟，格式化为时分格式（例如1325表示13点25分）
+const hours = String(now.getHours()).padStart(2, '0');
+const minutes = String(now.getMinutes()).padStart(2, '0');
+const timestamp = hours + minutes;
 
 // 检查当前版本是否包含今天的日期部分
 if (versionParts.length >= 3 && versionParts[1] + versionParts[2] === datePart) {
-  // 如果是今天的版本，使用当前时间戳作为修改次数
+  // 如果是今天的版本，使用当前时分作为修改次数
   newVersion = `${majorVersion}.${versionParts[1]}.${versionParts[2]}.${timestamp}`;
 } else {
-  // 如果不是今天的版本，创建新版本，使用当前时间戳作为修改次数
+  // 如果不是今天的版本，创建新版本，使用当前时分作为修改次数
   const yearPart = String(year).slice(2); // 25 格式
   newVersion = `${majorVersion}.${yearPart}${month}${day}.${timestamp}`;
 }

@@ -92,24 +92,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 显示插件版本信息
     displayExtensionInfo();
     
-    // 高级设置切换
-    document.getElementById('ToggleAdvancedSettings').addEventListener('click', function() {
-      const advancedSettings = document.getElementById('AdvancedSettings');
-      const buttonText = this.querySelector('span');
-      const icon = document.getElementById('advanced-settings-icon');
-      
-      // 切换高级设置区域的显示/隐藏
-      advancedSettings.classList.toggle('hidden');
-      
-      // 切换按钮文本和图标
-      if (advancedSettings.classList.contains('hidden')) {
-        buttonText.textContent = '显示高级设置';
-        icon.classList.remove('transform', 'rotate-180');
-      } else {
-        buttonText.textContent = '隐藏高级设置';
-        icon.classList.add('transform', 'rotate-180');
-      }
-    });
+    // 高级设置已隐藏并禁用编辑
     
     // 添加系统提示词按钮
     document.getElementById('AddSystemPrompt').addEventListener('click', function() {
@@ -809,31 +792,13 @@ function addCommonInfoToList(info) {
   deleteButton.addEventListener('click', function(e) {
     e.stopPropagation(); // 阻止事件冒泡
     const infoId = this.getAttribute('data-id');
+    const listItem = this.closest('li');
     
-    // 保存要删除的信息ID
-    this.dataset.deleteId = infoId;
-    
-    // 显示自定义模态框
-    showModal('确认删除', '确定要删除这条常用信息吗？');
-    
-    // 保存当前的li元素引用
-    this.dataset.liElement = li.innerHTML;
-  });
-
-  // 为模态框确认按钮添加事件监听（确保只添加一次）
-  const modalConfirmBtn = document.getElementById('DefaultModalConfirmBtn');
-  if (!modalConfirmBtn.dataset.deleteListenerAdded) {
-    modalConfirmBtn.dataset.deleteListenerAdded = 'true';
-    modalConfirmBtn.addEventListener('click', function() {
-      // 获取所有删除按钮中带有删除标记的按钮
-      const deleteButtons = document.querySelectorAll('.del-link[data-delete-id]');
-      if (deleteButtons.length > 0) {
-        const deleteButton = deleteButtons[0];
-        const infoId = deleteButton.getAttribute('data-delete-id');
-        const li = deleteButton.closest('li');
-        
+    // 显示确认模态框
+    showModal('确认删除', '确定要删除这条常用信息吗？', {
+      onConfirm: function() {
         // 删除列表项
-        li.remove();
+        listItem.remove();
         
         // 更新数据
         window.options.CommonInfo = window.options.CommonInfo.filter(item => item.id !== infoId);
@@ -847,13 +812,9 @@ function addCommonInfoToList(info) {
         // 清空编辑区域内容
         document.getElementById('EditCommonInfoName').value = '';
         document.getElementById('EditCommonInfoContent').value = '';
-        
-        // 移除删除标记
-        deleteButton.removeAttribute('data-delete-id');
-        deleteButton.removeAttribute('data-li-element');
       }
     });
-  }
+  });
 }
 
 /**

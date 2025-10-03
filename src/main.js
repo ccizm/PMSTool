@@ -849,7 +849,7 @@ export function getDefaultSettings() {
     AI: {
       AIModelType: 'doubao-1-5-pro-32k-250115',
       AIModelVersion: 'latest',
-      APIBaseURL: 'https://ark.cn-beijing.volces.com/api/v3',
+      APIBaseURL: 'https://openapi.beida.xyz/v1',
       APIKey: '',
       MaxTokens: 16000,
       Temperature: 0.7,
