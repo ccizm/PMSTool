@@ -12,7 +12,7 @@ PMS工具箱通过整合酒店日常工作中的常用功能，为酒店员工�
 
 ### 1. 结账单制作
 - 快速生成标准酒店结账单
-- 支持多种模板选择（华住、iHotel、Sunmei等）
+- 支持多种模板选择（Huazhu、iHotel、Sunmei等）
 - 自定义消费项目和付款方式
 - 一键打印功能
 
@@ -105,7 +105,7 @@ PMSTool/
 
 1. 克隆项目到本地：
    ```bash
-   git clone https://github.com/yourusername/PMSTool.git
+   git clone https://github.com/pmstool/PMSTool.git
    cd PMSTool
    ```
 
@@ -203,10 +203,8 @@ npm run build
 ## 📞 联系我们
 
 如有任何问题或建议，请联系项目维护者：
-- 邮箱: siem@example.com
+- 邮箱: yan@zhiming.xyz
 
 ---
 
 感谢使用PMS工具箱！希望它能为您的酒店工作带来便利和效率。
-
-*版本：1.25.1003.37370*
