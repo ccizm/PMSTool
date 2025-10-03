@@ -20,13 +20,13 @@ jobs:
     steps:
       # 检出代码
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       # 设置Node.js环境
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18.x'
           cache: 'npm'
@@ -45,21 +45,30 @@ jobs:
 
       # 上传构建产物作为Artifact
       - name: Upload build artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pmstool-extension
           path: dist/
           retention-days: 30
 
-      # 在Release事件时，创建GitHub Release并上传ZIP文件
-      - name: Create and upload release asset
+      # 在Release事件时，创建ZIP文件
+      - name: Create ZIP file for release
+        if: github.event_name == 'release'
+        run: |
+          cd dist
+          zip -r ../hpms-tool-${{ github.event.release.tag_name }}.zip .
+          cd ..
+          ls -la
+
+      # 在Release事件时，上传ZIP文件到GitHub Release
+      - name: Upload release asset
         if: github.event_name == 'release'
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./dist/hpms-tool-${{ github.event.release.tag_name }}.zip
+          asset_path: ./hpms-tool-${{ github.event.release.tag_name }}.zip
           asset_name: hpms-tool-${{ github.event.release.tag_name }}.zip
           asset_content_type: application/zip
 
@@ -70,10 +79,10 @@ jobs:
     if: github.event_name == 'pull_request'
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18.x'
 
