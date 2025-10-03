@@ -1,0 +1,132 @@
+name: PMSTool CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+  release:
+    types:
+      - created
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      # 检出代码
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 设置Node.js环境
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+          cache: 'npm'
+
+      # 安装系统依赖
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y zip
+          echo "System dependencies installed"
+
+      # 安装项目依赖
+      - name: Install project dependencies
+        run: |
+          npm install
+          echo "Project dependencies installed"
+          # 显示依赖版本信息用于调试
+          npm list vite
+          npm list @crxjs/vite-plugin
+
+      # 显示环境信息用于调试
+      - name: Show environment info
+        run: |
+          node --version
+          npm --version
+          echo "Current directory: $(pwd)"
+          ls -la
+
+      # 构建项目
+      - name: Build project with debug
+        run: |
+          echo "Starting build process"
+          npm run build-no-zip --if-present || npm run build-no-zip
+          echo "Build process completed"
+
+      # 检查构建结果
+      - name: Check build output
+        if: always()
+        run: |
+          ls -la
+          if [ -d "dist" ]; then
+            echo "dist directory exists"
+            ls -la dist
+          else
+            echo "dist directory does not exist"
+            exit 1
+          fi
+
+      # 上传构建产物作为Artifact
+      - name: Upload build artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pmstool-extension
+          path: dist/
+          retention-days: 30
+
+      # 在Release事件时，创建ZIP文件
+      - name: Create ZIP file for release
+        if: github.event_name == 'release' && success()
+        run: |
+          echo "Creating release ZIP file"
+          cd dist
+          zip -r ../hpms-tool-${{ github.event.release.tag_name }}.zip .
+          cd ..
+          ls -la
+          echo "ZIP file created"
+
+      # 在Release事件时，上传ZIP文件到GitHub Release
+      - name: Upload release asset
+        if: github.event_name == 'release' && success()
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./hpms-tool-${{ github.event.release.tag_name }}.zip
+          asset_name: hpms-tool-${{ github.event.release.tag_name }}.zip
+          asset_content_type: application/zip
+
+  # 在PR事件时运行代码质量检查
+  code-quality:
+    name: Code Quality Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+
+      - name: Install dependencies
+        run: npm install
+
+      # 可以添加ESLint、Prettier等代码质量检查工具
+      # - name: Run ESLint
+      #   run: npx eslint .
+
+      # - name: Run Prettier check
+      #   run: npx prettier --check .
