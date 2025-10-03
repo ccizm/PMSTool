@@ -30,7 +30,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: chrome-extension
-          path: 'hpms-tool-*.zip'
+          path: 'dist/hpms-tool-*.zip'
 
   lint:
     runs-on: ubuntu-latest
