@@ -26,11 +26,25 @@ jobs:
       - name: 运行构建脚本
         run: npm run build
 
+      - name: 检查 dist 目录内容
+        run: |
+          echo "查看 dist 目录内容："
+          ls -la dist/
+          
+          # 确认 ZIP 文件是否存在
+          if [ -f dist/hpms-tool-*.zip ]; then
+            echo "ZIP 文件已找到"
+            ls -la dist/hpms-tool-*.zip
+          else
+            echo "ZIP 文件未找到！列出所有可能的 zip 文件："
+            ls -la dist/*.zip || echo "没有找到任何 zip 文件"
+          fi
+
       - name: 上传构建产物
         uses: actions/upload-artifact@v4
         with:
           name: chrome-extension
-          path: 'dist/hpms-tool-*.zip'
+          path: 'dist/*.zip'
 
   lint:
     runs-on: ubuntu-latest
