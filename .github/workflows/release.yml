@@ -1,4 +1,4 @@
-name: 创建发布版本
+name: Create Release
 
 on:
   release:
@@ -6,89 +6,64 @@ on:
 
 jobs:
   build-and-release:
-    runs-on: ubuntu-latest
     name: 构建并上传发布产物
-    
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
     steps:
-      # 步骤1: 检出代码
-      - name: 检出代码
+      - name: Checkout 代码
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # 获取完整历史记录
+          fetch-depth: 0
 
-      # 步骤2: 设置 Node.js 环境
       - name: 设置 Node.js 环境
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
 
-      # 步骤3: 安装项目依赖
       - name: 安装依赖
         run: npm ci
 
-      # 步骤4: 运行构建脚本 (使用 build-no-zip)
-      - name: 运行构建脚本
+      - name: 构建项目
         run: npm run build-no-zip
 
-      # 步骤5: 验证构建结果
-      - name: 验证构建输出
+      - name: 生成发布说明
+        id: generate-release-notes
         run: |
-          echo "构建完成，当前工作目录: $(pwd)"
+          PREVIOUS_TAG=$(git describe --abbrev=0 --tags $(git rev-list --tags --skip=1 --max-count=1))
+          echo "Previous tag: $PREVIOUS_TAG"
           
-          # 检查 dist 目录是否存在
-          if [ ! -d "dist" ]; then
-            echo "错误: dist 目录不存在，构建失败！"
-            exit 1
+          RELEASE_NOTES=$(git log $PREVIOUS_TAG..${{ github.ref_name }} --pretty=format:"- %s (%h)" --reverse)
+          
+          if [ -z "$RELEASE_NOTES" ]; then
+            RELEASE_NOTES="No significant changes since previous release."
           fi
           
-          echo "dist 目录内容："
-          ls -la dist/
-          echo "dist 目录文件数量: $(ls -la dist/ | wc -l) 个"
+          echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
+          echo "$RELEASE_NOTES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
-      # 步骤6: 手动打包构建产物
-      - name: 打包构建产物
+      - name: 准备构建产物
         run: |
-          # 定义打包文件名，使用标签名作为版本标识
-          PACKAGE_NAME="hpms-tool-${{ github.ref_name }}.zip"
-          echo "准备打包文件: $PACKAGE_NAME"
-          
-          # 进入 dist 目录并打包所有内容
-          cd dist
-          zip -r "../$PACKAGE_NAME" ./*
-          cd ..
-          
-          # 验证打包结果
-          if [ -f "$PACKAGE_NAME" ]; then
-            echo "打包成功！文件大小: $(du -h "$PACKAGE_NAME" | cut -f1)"
-            ls -la "$PACKAGE_NAME"
-          else
-            echo "错误: 打包失败，文件 $PACKAGE_NAME 不存在！"
-            exit 1
-          fi
+          mkdir -p release-artifacts
+          cp -r dist/* release-artifacts/
+          zip -r release.zip release-artifacts/
 
-      # 步骤7: 上传构建产物到 GitHub Release
-      - name: 上传构建产物到 Release
-        uses: svenstaro/upload-release-action@v2
+      - name: 创建GitHub Release
+        uses: softprops/action-gh-release@v2
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: "hpms-tool-${{ github.ref_name }}.zip"
-          file_glob: false  # 不使用通配符，直接指定文件名
-          tag: ${{ github.ref }}
-          overwrite: true
-          asset_name: "hpms-tool-${{ github.ref_name }}.zip"
-          asset_content_type: "application/zip"
-
-  # 可选的通知作业
-  notify:
-    runs-on: ubuntu-latest
-    name: 发送构建完成通知
-    needs: build-and-release
-    steps:
-      - name: 通知构建完成
-        run: |
-          echo "✅ Chrome 扩展已成功构建并上传到 Release"
-          echo "📝 发布版本: ${{ github.event.release.name || '未命名版本' }}"
-          echo "🔖 发布标签: ${{ github.ref_name }}"
-          echo "📅 发布时间: $(date)"
-          echo "💡 提示: 构建产物已上传至 Release 的 Assets 部分"
+          name: Release ${{ github.ref_name }}
+          body: |
+            ## Changes in ${{ github.ref_name }}
+            
+            ${{ env.RELEASE_NOTES }}
+            
+            ### Installation
+            Download the attached artifacts for your platform.
+          prerelease: ${{ contains(github.ref_name, '-') }}
+          files: |
+            release.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
