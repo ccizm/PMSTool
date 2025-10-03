@@ -1,0 +1,88 @@
+name: PMSTool CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+  release:
+    types:
+      - created
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      # 检出代码
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # 设置Node.js环境
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          cache: 'npm'
+
+      # 安装依赖
+      - name: Install dependencies
+        run: npm install
+
+      # 构建项目
+      - name: Build project
+        run: npm run build
+
+      # 检查构建结果
+      - name: Check build output
+        run: ls -la dist
+
+      # 上传构建产物作为Artifact
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: pmstool-extension
+          path: dist/
+          retention-days: 30
+
+      # 在Release事件时，创建GitHub Release并上传ZIP文件
+      - name: Create and upload release asset
+        if: github.event_name == 'release'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./dist/hpms-tool-${{ github.event.release.tag_name }}.zip
+          asset_name: hpms-tool-${{ github.event.release.tag_name }}.zip
+          asset_content_type: application/zip
+
+  # 在PR事件时运行代码质量检查
+  code-quality:
+    name: Code Quality Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+
+      - name: Install dependencies
+        run: npm install
+
+      # 可以添加ESLint、Prettier等代码质量检查工具
+      # - name: Run ESLint
+      #   run: npx eslint .
+
+      # - name: Run Prettier check
+      #   run: npx prettier --check .
