@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/src/style.css">
+    <link rel="stylesheet" href="/node_modules/remixicon/fonts/remixicon.css">
+    <script type="module">
+        import { setPageTitle, showModal, initModal, createNavbar, recordPageVisit } from '../main.js';
+        import './handoversheet.js';
+
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', async function () {
+            // 设置页面标题
+            setPageTitle();
+            // 创建统一导航栏
+            createNavbar();
+            // 初始化模态框
+            initModal();
+            // 记录页面访问
+            await recordPageVisit('handoversheet', 'POS差异单');
+        });
+    </script>
+</head>
+
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 main-content">
+        <div class="bg-white rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold mb-6 flex items-center text-gray-800">
+                    <i class="ri-file-list-line text-lg mr-2 text-blue-500"></i>
+                    POS机交接金额及差异单
+                </h3>
+                <button id="guideButton" class="text-blue-500 hover:text-blue-700 p-2 rounded-full hover:bg-blue-50 transition-colors" title="使用引导">
+                    <i class="ri-question-mark text-base"></i>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div class="mb-4">
+                    <label for="todayDate" class="block text-sm font-medium text-gray-700 mb-1">当天日期：</label>
+                    <input type="text" class="input-field" id="todayDate" placeholder="请选择当天日期..." readonly>
+                </div>
+                <div class="mb-4">
+                    <label for="PMSUM" class="block text-sm font-medium text-gray-700 mb-1">全天PMS刷卡金额：</label>
+                    <input type="text" class="input-field" id="PMSUM" placeholder="请填写金额...">
+                </div>
+                <div class="mb-4">
+                    <label for="POSUM" class="block text-sm font-medium text-gray-700 mb-1">全天POS机刷卡金额：</label>
+                    <input type="text" class="input-field" id="POSUM" placeholder="请填写金额...">
+                </div>
+                <div class="mb-4">
+                    <label for="Difference" class="block text-sm font-medium text-gray-700 mb-1">差异：</label>
+                    <input type="text" class="input-field" id="Difference" placeholder="请填写差异...">
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <label for="DifferenceDESC" class="block text-sm font-medium text-gray-700 mb-1">差异说明：</label>
+                <textarea class="input-field" id="DifferenceDESC" rows="3" placeholder="请填写差异说明，尽可能详细..."></textarea>
+            </div>
+
+            <div class="flex justify-end space-x-4">
+                <button type="button" class="btn btn-danger" id="ClearHandoverSheetFrom">
+                    <i class="fa fa-trash" aria-hidden="true"></i> 清空
+                </button>
+                <button class="btn btn-primary" id="HandoverSheetSubmit">
+                    <i class="fa fa-eye" aria-hidden="true"></i> 预览
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 预览模态框 -->
+    <div id="PreviewModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-auto">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h4 class="text-lg font-medium text-gray-800">打印预览</h4>
+                <button type="button" class="text-gray-500 hover:text-gray-700 Print-close">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="p-4" id="PreviewModalText">
+                <div id="previewCheckout" style="height: 60vh; min-height: 400px; overflow-y: auto;">
+                    <!-- 预览内容将在这里动态生成 -->
+                </div>
+            </div>
+            <div class="flex justify-end p-4 border-t space-x-4">
+                <button type="button" class="btn btn-secondary Print-close">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary" id="PrintThis">
+                    打印
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 默认提示模态框 -->
+    <div id="DefaultModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md relative z-10">
+            <div class="p-5 border-b border-gray-200">
+                <h3 id="DefaultModalLabel" class="text-lg font-medium text-gray-900">提示</h3>
+            </div>
+            <div class="p-5">
+                <p id="DefaultModalText" class="text-gray-700"></p>
+            </div>
+            <div class="p-5 border-t border-gray-200 flex justify-end space-x-3">
+                <button id="DefaultModalCloseBtn" class="btn btn-secondary">关闭</button>
+                <button id="DefaultModalConfirmBtn" class="btn btn-primary">确认</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

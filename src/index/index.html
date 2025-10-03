@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="/node_modules/remixicon/fonts/remixicon.css">
+  <script type="module" src="/src/index/index.js"></script>
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto px-4 py-8 max-w-6xl">
+    <!-- 顶部信息区 -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <!-- 温馨问候 -->
+      <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">
+          <span id="greeting-text">欢迎回来</span>，<span id="user-name"></span>！
+        </h1>
+        <p class="text-gray-600 mb-2">
+          今天是 <span id="current-date" class="font-medium"></span>
+        </p>
+        <p class="text-2xl font-light text-blue-600" id="current-time"></p>
+        <p class="text-gray-500 text-sm mt-2">
+          当前酒店：<span id="hotel-name" class="font-medium text-gray-700"></span>
+        </p>
+      </div>
+      
+      <!-- 使用统计 -->
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+          <i class="ri-bar-chart-2-line text-base text-blue-500 mr-2"></i>
+          使用统计
+        </h3>
+        <div class="grid grid-cols-3 gap-4 text-center">
+          <div class="bg-gray-50 p-3 rounded-lg">
+            <div class="text-2xl font-bold text-blue-600" id="total-uses">0</div>
+            <div class="text-xs text-gray-500 mt-1">总使用次数</div>
+          </div>
+          <div class="bg-gray-50 p-3 rounded-lg">
+            <div class="text-2xl font-bold text-green-600" id="this-month">0</div>
+            <div class="text-xs text-gray-500 mt-1">本月使用</div>
+          </div>
+          <div class="bg-gray-50 p-3 rounded-lg">
+            <div class="text-2xl font-bold text-purple-600" id="tools-used">0</div>
+            <div class="text-xs text-gray-500 mt-1">使用工具数</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 提醒事项 -->
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+          <i class="ri-alarm-line text-base text-amber-500 mr-2"></i>
+          提醒事项
+        </h3>
+        <div id="today-reminders" class="max-h-48 overflow-y-auto">
+          <p class="text-gray-500 text-sm italic">加载中...</p>
+        </div>
+        <a href="/src/newclock/newclock.html" class="text-blue-600 text-sm hover:underline mt-3 inline-block">
+          查看全部提醒 →
+        </a>
+      </div>
+    </div>
+    
+    <!-- 主功能区 -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <!-- 快捷工具 -->
+      <div class="lg:col-span-2">
+        <h2 class="text-xl font-semibold text-gray-700 mb-4">快捷工具</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <!-- 结账单制作 -->
+          <a href="/src/checkout/checkout.html" class="bg-white rounded-lg shadow-lg p-5 hover:shadow-lg transition-shadow border border-gray-100 transform hover:-translate-y-1">
+            <div class="flex items-center justify-center w-12 h-12 rounded-full bg-blue-100 text-blue-600 mb-4">
+              <i class="ri-file-list-line text-lg"></i>
+            </div>
+            <h3 class="text-lg font-medium text-gray-800">结账单制作</h3>
+            <p class="text-sm text-gray-500 mt-1">快速生成客户结账单</p>
+          </a>
+          
+          <!-- 房价计算器 -->
+          <a href="/src/pricecalc/pricecalc.html" class="bg-white rounded-lg shadow-lg p-5 hover:shadow-lg transition-shadow border border-gray-100 transform hover:-translate-y-1">
+            <div class="flex items-center justify-center w-12 h-12 rounded-full bg-green-100 text-green-600 mb-4">
+              <i class="ri-calculator-line text-lg"></i>
+            </div>
+            <h3 class="text-lg font-medium text-gray-800">房价计算器</h3>
+            <p class="text-sm text-gray-500 mt-1">轻松计算各类房价</p>
+          </a>
+          
+          <!-- 查常用信息 -->
+          <a href="/src/commonInfo/commonInfo.html" class="bg-white rounded-lg shadow-lg p-5 hover:shadow-lg transition-shadow border border-gray-100 transform hover:-translate-y-1">
+            <div class="flex items-center justify-center w-12 h-12 rounded-full bg-yellow-100 text-yellow-600 mb-4">
+              <i class="ri-book-open-line text-lg"></i>
+            </div>
+            <h3 class="text-lg font-medium text-gray-800">查常用信息</h3>
+            <p class="text-sm text-gray-500 mt-1">查询各类常用信息</p>
+          </a>
+          
+          <!-- POS差异单 -->
+          <a href="/src/handoversheet/handoversheet.html" class="bg-white rounded-lg shadow-lg p-5 hover:shadow-lg transition-shadow border border-gray-100 transform hover:-translate-y-1">
+            <div class="flex items-center justify-center w-12 h-12 rounded-full bg-purple-100 text-purple-600 mb-4">
+              <i class="ri-exchange-box-line text-lg"></i>
+            </div>
+            <h3 class="text-lg font-medium text-gray-800">POS差异单</h3>
+            <p class="text-sm text-gray-500 mt-1">处理POS机差异问题</p>
+          </a>
+          
+          <!-- AI助手 -->
+          <a href="/src/aiassistant/aiassistant.html" class="bg-white rounded-lg shadow-lg p-5 hover:shadow-lg transition-shadow border border-gray-100 transform hover:-translate-y-1">
+            <div class="flex items-center justify-center w-12 h-12 rounded-full bg-red-100 text-red-600 mb-4">
+              <i class="ri-chat-ai-line text-lg"></i>
+            </div>
+            <h3 class="text-lg font-medium text-gray-800">AI助手</h3>
+            <p class="text-sm text-gray-500 mt-1">智能问答与辅助工具</p>
+          </a>
+          
+          <!-- 时钟报时器 -->
+          <a href="/src/newclock/newclock.html" class="bg-white rounded-lg shadow-lg p-5 hover:shadow-lg transition-shadow border border-gray-100 transform hover:-translate-y-1">
+            <div class="flex items-center justify-center w-12 h-12 rounded-full bg-indigo-100 text-indigo-600 mb-4">
+              <i class="ri-time-line text-lg"></i>
+            </div>
+            <h3 class="text-lg font-medium text-gray-800">时钟报时器</h3>
+            <p class="text-sm text-gray-500 mt-1">时间提醒与报时功能</p>
+          </a>
+        </div>
+      </div>
+      
+      <!-- 最近使用 -->
+      <div>
+        <h2 class="text-xl font-semibold text-gray-700 mb-4">最近使用</h2>
+        <div class="bg-white rounded-xl shadow-lg p-5 border border-gray-100">
+          <div id="recent-activities" class="space-y-2 min-h-72 max-h-72 overflow-auto">
+            <p class="text-gray-500 text-sm italic">加载中...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 智能助手区域 -->
+    <div class="mt-8 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl shadow-sm p-6 border border-blue-100">
+      <div class="flex flex-col md:flex-row items-center">
+        <div class="md:w-1/4 mb-4 md:mb-0">
+          <div class="flex items-center justify-center w-16 h-16 rounded-full bg-blue-600 text-white">
+              <i class="ri-chat-ai-line text-2xl"></i>
+            </div>
+        </div>
+        <div class="md:w-3/4 md:pl-6">
+          <h3 class="text-xl font-semibold text-gray-800 mb-2">需要帮助吗？</h3>
+          <p class="text-gray-600 mb-4">我们的AI助手随时为您提供支持，解答您在工作中遇到的问题。</p>
+          <a href="/src/aiassistant/aiassistant.html" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            咨询AI助手
+            <i class="ri-arrow-right-s-line ml-2 -mr-1 text-sm"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 温馨提示 -->
+    <div class="mt-8 bg-white rounded-lg shadow-sm p-5 border border-gray-100">
+      <h3 class="text-lg font-medium text-gray-800 mb-2 flex items-center">
+        <i class="ri-alert-line text-base text-yellow-500 mr-2"></i>
+        温馨提示
+      </h3>
+      <ul class="text-gray-600 space-y-2 text-sm">
+        <li class="flex items-start">
+          <i class="ri-check-line text-sm text-green-500 mr-2 mt-1"></i>
+          定期保存您的工作，避免数据丢失
+        </li>
+        <li class="flex items-start">
+          <i class="ri-check-line text-sm text-green-500 mr-2 mt-1"></i>
+          使用完毕后请及时关闭不需要的页面，保持系统流畅
+        </li>
+        <li class="flex items-start">
+          <i class="ri-check-line text-sm text-green-500 mr-2 mt-1"></i>
+          有任何建议或问题，请联系技术支持
+        </li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

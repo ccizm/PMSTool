@@ -1,0 +1,408 @@
+<!--
+    PMS-Tools - 打印页
+    作者：张贝达
+    网站：https://beida.xyz
+    邮箱：admin@beida.xyz
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style data-tippy-stylesheet="">
+        .tippy-box[data-animation=fade][data-state=hidden] {
+            opacity: 0
+        }
+
+        [data-tippy-root] {
+            max-width: calc(100vw - 10px)
+        }
+
+        .tippy-box {
+            position: relative;
+            background-color: #333;
+            color: #fff;
+            border-radius: 4px;
+            font-size: 14px;
+            line-height: 1.4;
+            white-space: normal;
+            outline: 0;
+            transition-property: transform, visibility, opacity
+        }
+
+        .tippy-box[data-placement^=top]>.tippy-arrow {
+            bottom: 0
+        }
+
+        .tippy-box[data-placement^=top]>.tippy-arrow:before {
+            bottom: -7px;
+            left: 0;
+            border-width: 8px 8px 0;
+            border-top-color: initial;
+            transform-origin: center top
+        }
+
+        .tippy-box[data-placement^=bottom]>.tippy-arrow {
+            top: 0
+        }
+
+        .tippy-box[data-placement^=bottom]>.tippy-arrow:before {
+            top: -7px;
+            left: 0;
+            border-width: 0 8px 8px;
+            border-bottom-color: initial;
+            transform-origin: center bottom
+        }
+
+        .tippy-box[data-placement^=left]>.tippy-arrow {
+            right: 0
+        }
+
+        .tippy-box[data-placement^=left]>.tippy-arrow:before {
+            border-width: 8px 0 8px 8px;
+            border-left-color: initial;
+            right: -7px;
+            transform-origin: center left
+        }
+
+        .tippy-box[data-placement^=right]>.tippy-arrow {
+            left: 0
+        }
+
+        .tippy-box[data-placement^=right]>.tippy-arrow:before {
+            left: -7px;
+            border-width: 8px 8px 8px 0;
+            border-right-color: initial;
+            transform-origin: center right
+        }
+
+        .tippy-box[data-inertia][data-state=visible] {
+            transition-timing-function: cubic-bezier(.54, 1.5, .38, 1.11)
+        }
+
+        .tippy-arrow {
+            width: 16px;
+            height: 16px;
+            color: #333
+        }
+
+        .tippy-arrow:before {
+            content: "";
+            position: absolute;
+            border-color: transparent;
+            border-style: solid
+        }
+
+        .tippy-content {
+            position: relative;
+            padding: 5px 9px;
+            z-index: 1
+        }
+    </style>
+    <style>
+        body {
+            font-family: "宋体";
+            width: 100%;
+            padding: 16px;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            -khtml-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+            background-color: #fff;
+        }
+
+        .Print {
+            width: 72mm;
+            margin: auto;
+            background-color: #fff;
+            padding: 4px;
+            height: auto;
+            padding-bottom: 40px;
+            -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgba(99 99 100 / 60%);
+            box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgb(99 99 100 / 60%);
+        }
+
+        .Print-header {
+            text-align: center;
+            font-family: "宋体";
+            font-weight: 300;
+        }
+
+        .Print-header img {
+            width: 60%;
+            display: block;
+            margin: 0 auto 10px;
+        }
+
+        .Print-header .title {
+            font-size: 12pt;
+        }
+
+        .Print-header .subtitle {
+            font-size: 12pt;
+        }
+
+        .Print-info .info-item {
+            font-size: 9.5pt;
+            padding: 6px 0;
+            border-bottom: 1px solid transparent;
+        }
+
+        .Print-info .info-item:hover,
+        .Print-header .title:hover,
+        .Print-header .subtitle:hover,
+        .Print-info .info-item:hover,
+        .Print-details table tr:hover,
+        .Print-signature .protocol:hover,
+        .Print-signature .signature:hover,
+        .Print-footer .footer-item:hover {
+            background-color: #337ab7;
+            color: #fff;
+            border-color: #66afe9;
+            -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgb(102 175 233 / 60%);
+            box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgb(102 175 233 / 60%);
+            transition: .15s;
+        }
+
+        .Print-details table {
+            width: 100%;
+        }
+
+        .Print-details table td,
+        .Print-details table th {
+            font-weight: 300;
+            font-size: 9.5pt;
+            padding: 6px 0;
+            text-align: center;
+            color: #000;
+        }
+
+        .Print-signature,
+        .Print-footer {
+            font-size: 9pt;
+        }
+
+        .Print-signature .protocol {
+            text-indent: 2em;
+            line-height: 18px;
+        }
+
+        .Print-signature .signature {
+            padding: 10px;
+            text-align: right;
+        }
+
+        .Print-footer {
+            padding-top: 6px;
+        }
+
+        .Print-footer .col-6 {
+            float: left;
+            width: 50%;
+        }
+
+        .Print-footer .footer-item {
+            padding: 6px 0;
+        }
+
+        @media print {
+
+            body,
+            html {
+                font-family: "宋体";
+                margin: 0;
+                padding: 0;
+                background-color: #fff;
+            }
+
+            @page {
+                size: auto;
+                margin: 4mm;
+            }
+
+            .Print {
+                background-color: #fff;
+                padding: 0;
+                -webkit-box-shadow: none;
+                box-shadow: none;
+            }
+
+            .Print-header {
+                text-align: center;
+                font-family: "宋体";
+                font-weight: 300;
+                width: 100%;
+            }
+
+            .Print-header .title {
+                font-size: 12pt;
+            }
+
+            .Print-header .subtitle {
+                font-size: 12pt;
+            }
+
+            .Print-info .info-item {
+                font-size: 9.5pt;
+                padding: 6px 0;
+            }
+
+            .Print-details table {
+                width: 100%;
+            }
+
+            .Print-details table td,
+            .Print-details table th {
+                font-weight: 100;
+                font-size: 9.5pt;
+                text-align: center;
+            }
+
+            .Print-details thead tr {
+                border-bottom: 1pt solid #000;
+            }
+
+            .Paymenthead,
+            .Consumptionfooter {
+                border-top: 2px solid #000;
+            }
+
+            .Print-signature,
+            .Print-footer {
+                font-size: 9pt;
+            }
+
+            .Print-signature .protocol {
+                text-indent: 2em;
+            }
+
+            .Print-signature .signature {
+                padding: 10px;
+                text-align: right;
+            }
+
+            .Print-footer .col-6 {
+                float: left;
+                width: 50%;
+            }
+        }
+    </style>
+    <style>
+      /* 移除对Bootstrap的依赖，使用自定义样式 */
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-right: -5px;
+        margin-left: -5px;
+      }
+      .col-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+        padding-right: 5px;
+        padding-left: 5px;
+      }
+      .col-12 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        padding-right: 5px;
+        padding-left: 5px;
+      }
+      .g-1 {
+        margin-right: -5px;
+        margin-left: -5px;
+      }
+      .g-1 > [class*="col-"] {
+        padding-right: 5px;
+        padding-left: 5px;
+      }
+    </style>
+</head>
+
+<body>
+    <div class="Print">
+        <div class="Print-header">
+            <img src="data:image/png;base64,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"
+                alt="" />
+            <div class="title">橙子上海徐家汇虚拟酒店</div>
+            <div class="subtitle">结账单</div>
+        </div>
+        <div class="Print-info">
+            <div class="row g-1">
+                <div class="col-6">
+                    <div class="info-item">姓名 <span id="guestName"></span></div>
+                </div>
+                <div class="col-6">
+                    <div class="info-item">确认号 <span id="confirmNumber"></span></div>
+                </div>
+                <div class="col-6">
+                    <div class="info-item">房号 <span id="roomNumber"></span></div>
+                </div>
+                <div class="col-6">
+                    <div class="info-item">收银员 <span id="cashier"></span></div>
+                </div>
+                <div class="col-12">
+                    <div class="info-item">公司名称 <span id="companyName"></span></div>
+                </div>
+                <div class="col-12">
+                    <div class="info-item">团体名称 <span id="groupName"></span></div>
+                </div>
+                <div class="col-12">
+                    <div class="info-item">会员号码 <span id="memberNumber"></span></div>
+                </div>
+                <div class="col-12">
+                    <div class="info-item">到店时间 <span id="checkinTime"></span></div>
+                </div>
+                <div class="col-12">
+                    <div class="info-item">离店时间 <span id="checkoutTime"></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="Print-details">
+            <table>
+                <thead>
+                    <tr>
+                        <th align="left">日期</th>
+                        <th>摘要</th>
+                        <th>消费</th>
+                        <th>付款</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="Paymenthead" style="display: none;">
+                        <td></td>
+                        <td></td>
+                        <td colspan="2">0</td>
+                    </tr>
+                    <tr class="Consumptionfooter">
+                        <td></td>
+                        <td></td>
+                        <!-- 单元格合并2格 -->
+                        <td colspan="2">消费合计</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="Print-signature">
+            <div class="protocol">
+                我同意为此账单中所有款项承担付款义务。
+            </div>
+            <div class="signature">
+                客人签字 _____________________
+            </div>
+        </div>
+        <div class="Print-footer">
+            <div class="footer-item"><span id="footerItem"></span></div>
+        </div>
+    </div>
+    <script type="module" src="js/index.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="/node_modules/remixicon/fonts/remixicon.css">
+  <script type="module">
+    import { setPageTitle, showModal, initModal, createNavbar, recordPageVisit } from '../main.js';
+    import './options.js';
+
+    // 页面加载完成后执行
+    document.addEventListener('DOMContentLoaded', async function () {
+      // 设置页面标题
+      setPageTitle();
+      // 创建统一导航栏
+      createNavbar();
+      // 初始化模态框
+      initModal();
+      // 记录页面访问
+      await recordPageVisit('options', '选项设置');
+    });
+  </script>
+</head>
+
+<body class="bg-gray-100">
+  <div class="container mx-auto px-4 main-content">
+    <!-- 两列布局 -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- 第一列：标签页内容 -->
+      <div class="lg:col-span-2">
+        <!-- 标签页导航 -->
+        <div class="mb-6">
+          <div class="inline-flex rounded-md shadow-lg" role="group">
+            <button type="button"
+              class="tab-btn px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-l-lg hover:bg-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-500"
+              data-tab="basic">
+              基础信息
+            </button>
+            <button type="button"
+              class="tab-btn px-4 py-2 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-500"
+              data-tab="consumption">
+              消费类型
+            </button>
+            <button type="button"
+              class="tab-btn px-4 py-2 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-500"
+              data-tab="payment">
+              付款方式
+            </button>
+            <button type="button"
+              class="tab-btn px-4 py-2 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-500"
+              data-tab="vip">
+              会员等级
+            </button>
+            <button type="button"
+              class="tab-btn px-4 py-2 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-500"
+              data-tab="commoninfo">
+              常用信息
+            </button>
+            <button type="button"
+              class="tab-btn px-4 py-2 text-sm font-medium text-gray-700 bg-white rounded-r-lg hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-500"
+              data-tab="ai">
+              AI大模型
+            </button>
+          </div>
+        </div>
+
+        <!-- 标签页内容 -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <!-- 基础信息标签页 -->
+          <div class="tab-content" id="basic">
+            <h2 class="text-xl font-bold mb-4">酒店基本信息</h2>
+            <form id="HotelInfo" class="space-y-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label for="SetHotelName" class="block text-sm font-medium text-gray-700 mb-1">酒店名称</label>
+                  <input type="text" id="SetHotelName" class="input-field">
+                </div>
+                <div>
+                  <label for="SetHotelAddress" class="block text-sm font-medium text-gray-700 mb-1">酒店地址</label>
+                  <input type="text" id="SetHotelAddress" class="input-field">
+                </div>
+                <div>
+                  <label for="SetStaffAD" class="block text-sm font-medium text-gray-700 mb-1">收款人AD</label>
+                  <input type="text" id="SetStaffAD" class="input-field">
+                </div>
+                <div>
+                  <label for="SetHotelPhone" class="block text-sm font-medium text-gray-700 mb-1">酒店电话</label>
+                  <input type="text" id="SetHotelPhone" class="input-field">
+                </div>
+                <div>
+                  <label for="SetHotelNum" class="block text-sm font-medium text-gray-700 mb-1">酒店编号</label>
+                  <input type="text" id="SetHotelNum" class="input-field">
+                </div>
+                <div>
+                  <label for="SetHotelZip" class="block text-sm font-medium text-gray-700 mb-1">邮编</label>
+                  <input type="text" id="SetHotelZip" class="input-field">
+                </div>
+                <div>
+                  <label for="SetHotelFax" class="block text-sm font-medium text-gray-700 mb-1">传真</label>
+                  <input type="text" id="SetHotelFax" class="input-field">
+                </div>
+              </div>
+
+            </form>
+          </div>
+
+          <!-- 消费类型标签页 -->
+          <div class="tab-content hidden" id="consumption">
+            <h2 class="text-xl font-bold mb-4">消费类型设置</h2>
+            <div class="mb-4">
+              <div class="flex space-x-2">
+                <input type="text" id="SetConsumptionType" placeholder="请输入消费类型" class="flex-1 input-field">
+                <button type="button" id="AddConsumptionType" class="btn btn-success">
+                  添加
+                </button>
+              </div>
+            </div>
+            <div class="overflow-x-auto">
+              <table id="ConsumptionTable" class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th scope="col"
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      消费类型</th>
+                    <th scope="col"
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      操作</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <!-- 消费类型数据将通过JavaScript动态添加 -->
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+
+          <!-- 付款方式标签页 -->
+          <div class="tab-content hidden" id="payment">
+            <h2 class="text-xl font-bold mb-4">付款方式设置</h2>
+            <div class="mb-4">
+              <div class="flex space-x-2">
+                <input type="text" id="SetPaymentType" placeholder="请输入付款方式" class="flex-1 input-field">
+                <button type="button" id="AddPaymentType" class="btn btn-success">
+                  添加
+                </button>
+              </div>
+            </div>
+            <div class="overflow-x-auto">
+              <table id="PaymentTable" class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th scope="col"
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      付款方式</th>
+                    <th scope="col"
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      操作</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <!-- 付款方式数据将通过JavaScript动态添加 -->
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+
+          <!-- 会员等级标签页 -->
+          <div class="tab-content hidden" id="vip">
+            <h2 class="text-xl font-bold mb-4">会员等级设置</h2>
+            <div class="mb-4 p-4 bg-gray-50 rounded-md">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label for="AddVipLevel" class="block text-sm font-medium text-gray-700 mb-1">会员等级</label>
+                  <input type="text" id="AddVipLevel" placeholder="如：金卡、银卡" class="input-field">
+                </div>
+                <div>
+                  <label for="AddVipDiscount" class="block text-sm font-medium text-gray-700 mb-1">折扣率</label>
+                  <input type="text" id="AddVipDiscount" placeholder="如：0.9" class="input-field">
+                </div>
+                <div class="flex items-end">
+                  <button type="button" id="AddVip" class="w-full btn btn-success">
+                    添加
+                  </button>
+                </div>
+
+              </div>
+            </div>
+            <div class="overflow-x-auto">
+              <table id="VipTable" class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th scope="col"
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      等级</th>
+                    <th scope="col"
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      折扣率</th>
+                    <th scope="col"
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      操作</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <!-- 会员等级数据将通过JavaScript动态添加 -->
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+
+          <!-- 常用信息标签页 -->
+          <div class="tab-content hidden" id="commoninfo">
+            <h2 class="text-xl font-bold mb-4">常用信息设置</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <!-- 左侧面板 -->
+              <div class="lg:col-span-1">
+                <!-- 顶部按钮区域 -->
+                <div class="mb-4 flex space-x-2">
+                  <button type="button" id="AddCommonInfo" class="flex-1 btn btn-primary">
+                    添加
+                  </button>
+                  <button type="button" id="UploadCommonInfo" class="flex-1 btn btn-secondary">
+                    上传
+                  </button>
+                </div>
+                <!-- 常用信息标题列表 -->
+                <div class="bg-gray-50 rounded-md h-[calc(100vh-240px)] overflow-y-auto">
+                  <ul id="CommonInfoList" class="divide-y divide-gray-200">
+                    <!-- 常用信息标题将通过JavaScript动态添加 -->
+                  </ul>
+                </div>
+              </div>
+              <!-- 右侧编辑区域 -->
+              <div id="CommonInfoEditor" class="lg:col-span-2 hidden">
+                <div class="bg-gray-50 rounded-md p-4">
+                  <div class="mb-4">
+                    <label for="EditCommonInfoName" class="block text-sm font-medium text-gray-700 mb-1">信息名称</label>
+                    <input type="text" id="EditCommonInfoName" placeholder="如：月份英文缩写对照表" class="input-field">
+                  </div>
+                  <div>
+                    <label for="EditCommonInfoContent" class="block text-sm font-medium text-gray-700 mb-1">信息内容
+                      (支持Markdown)</label>
+                    <textarea id="EditCommonInfoContent" rows="16" placeholder="请输入信息内容，支持Markdown语法"
+                      class="input-field"></textarea>
+                  </div>
+                  <div class="mt-4 flex justify-end space-x-2">
+                    <button type="button" id="SaveCommonInfo" class="btn btn-success hidden">
+                      保存
+                    </button>
+                    <button type="button" id="CancelEdit" class="btn btn-secondary hidden">
+                      取消
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI大模型设置标签页 -->
+          <div class="tab-content hidden" id="ai">
+            <h2 class="text-xl font-bold mb-4">AI大模型（OpenAI 兼容接口）</h2>
+            <form id="AISettings" class="space-y-4">
+              <div class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label for="AIModelType" class="block text-sm font-medium text-gray-700 mb-1">模型类型</label>
+                    <input type="text" id="AIModelType" class="input-field" placeholder="例如：doubao-1-5-pro-32k-250115">
+                  </div>
+                  <div>
+                    <label for="APIKey" class="block text-sm font-medium text-gray-700 mb-1">API Key （<a href="https://openapi.beida.xyz" target="_blank" class="text-blue-600 hover:text-blue-800">获取API Key</a>）</label>
+                    <input type="password" id="APIKey" class="input-field">
+                  </div>
+                </div>
+                <div>
+                  <label for="APIBaseURL" class="block text-sm font-medium text-gray-700 mb-1">API基础URL</label>
+                  <input type="text" id="APIBaseURL" class="input-field w-full">
+                </div>
+              </div>
+              
+              <!-- 高级设置切换按钮 -->
+              <div class="mt-4">
+                <button type="button" id="ToggleAdvancedSettings" class="flex items-center text-blue-600 hover:text-blue-800">
+                  <span>显示高级设置</span>
+                  <i class="ri-arrow-down-s-line text-base ml-1 transition-transform" id="advanced-settings-icon"></i>
+                </button>
+              </div>
+              
+              <!-- 高级设置区域（默认隐藏） -->
+              <div id="AdvancedSettings" class="hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label for="MaxTokens" class="block text-sm font-medium text-gray-700 mb-1">最大令牌数</label>
+                    <input type="number" id="MaxTokens" class="input-field">
+                  </div>
+                  <div>
+                    <label for="Temperature" class="block text-sm font-medium text-gray-700 mb-1">温度值 (0-2)</label>
+                    <input type="number" step="0.1" id="Temperature" class="input-field">
+                  </div>
+                  <div>
+                    <label for="TopP" class="block text-sm font-medium text-gray-700 mb-1">Top P (0-1)</label>
+                    <input type="number" step="0.1" id="TopP" class="input-field">
+                  </div>
+                  <div>
+                    <label for="FrequencyPenalty" class="block text-sm font-medium text-gray-700 mb-1">频率惩罚 (0-2)</label>
+                    <input type="number" step="0.1" id="FrequencyPenalty" class="input-field">
+                  </div>
+                  <div>
+                    <label for="PresencePenalty" class="block text-sm font-medium text-gray-700 mb-1">存在惩罚 (0-2)</label>
+                    <input type="number" step="0.1" id="PresencePenalty" class="input-field">
+                  </div>
+                  <div>
+                    <label for="CacheExpirationMinutes" class="block text-sm font-medium text-gray-700 mb-1">缓存过期时间(分钟)</label>
+                    <input type="number" id="CacheExpirationMinutes" class="input-field">
+                  </div>
+                </div>
+                
+                <div class="mt-4">
+                  <div class="flex items-center space-x-2">
+                    <input type="checkbox" id="EnableCache" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                    <label for="EnableCache" class="ml-2 block text-sm text-gray-700">启用响应缓存</label>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 系统提示词设置 -->
+              <div class="mt-4">
+                <div class="flex justify-between items-center mb-1">
+                  <label class="block text-sm font-medium text-gray-700">系统提示词</label>
+                  <button type="button" id="AddSystemPrompt" class="text-blue-600 hover:text-blue-800 text-sm flex items-center">
+                    <i class="ri-add-line text-sm mr-1"></i>
+                    添加提示词
+                  </button>
+                </div>
+                
+                <!-- 提示词列表 -->
+                <div id="SystemPromptsList" class="space-y-3">
+                  <!-- 提示词项将通过JavaScript动态生成 -->
+                </div>
+              </div>
+              
+              <!-- 保存按钮 -->
+              <div class="pt-4 border-t border-gray-200 flex justify-end space-x-3">
+                <button type="button" id="ResetAISettings" class="px-4 py-2 bg-gray-200 text-gray-800 font-medium rounded-md hover:bg-gray-300 transition-colors">重置默认值</button>
+                <button type="button" id="SaveAISettings" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors">保存设置</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- 第二列：关于插件和重置插件模块 -->
+      <div class="lg:col-span-1 space-y-6">
+        <!-- 关于插件 -->
+        <div class="bg-white rounded-lg shadow-md p-6 sticky top-6">
+          <div class="flex items-center justify-between cursor-pointer" id="about-toggle">
+              <h3 class="text-lg font-semibold text-gray-900">关于插件</h3>
+              <i class="ri-arrow-down-s-line text-base text-gray-500 transition-transform transform rotate-180" id="about-icon"></i>
+            </div>
+          <div class="mt-4 space-y-2" id="about-content">
+            <p id="AboutExtensions"></p>
+          </div>
+        </div>
+
+        <!-- 重置插件 -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <div class="flex items-center justify-between cursor-pointer" id="reset-toggle">
+            <h3 class="text-lg font-semibold text-gray-900">重置插件</h3>
+            <i class="ri-arrow-down-s-line text-base text-gray-500 transition-transform" id="reset-icon"></i>
+          </div>
+          <div class="mt-4 hidden" id="reset-content">
+            <p class="text-red-500 mb-4">警告：此操作将清除所有保存的设置，并恢复默认设置！</p>
+            <button type="button" id="ResetDefault" class="inline-flex items-center btn btn-danger">
+              重置为默认设置
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 模态框结构 -->
+  <div id="DefaultModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+    <div class="absolute inset-0 bg-black opacity-50"></div>
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md relative z-10">
+      <div class="p-5 border-b border-gray-200">
+        <h3 id="DefaultModalLabel" class="text-lg font-medium text-gray-900">提示</h3>
+      </div>
+      <div class="p-5">
+        <p id="DefaultModalText" class="text-gray-700"></p>
+      </div>
+      <div class="p-5 border-t border-gray-200 flex justify-end space-x-3">
+        <button id="DefaultModalCloseBtn"
+          class="px-4 py-2 bg-gray-200 text-gray-800 font-medium rounded-md hover:bg-gray-300 transition-colors">关闭</button>
+        <button id="DefaultModalConfirmBtn"
+          class="px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors">确认</button>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>时钟报时器 - PMS工具箱</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="/node_modules/remixicon/fonts/remixicon.css">
+    <script type="module">
+        import { createNavbar, setPageTitle, showModal, initModal, recordPageVisit } from '../main.js';
+        import './newclock.js';
+
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', async function () {
+            // 创建统一导航栏
+            createNavbar();
+            // 设置页面标题
+            setPageTitle();
+            // 初始化模态框
+            initModal();
+            // 记录页面访问
+            await recordPageVisit('newclock', '时钟报时器');
+        });
+    </script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-6">
+    <div class="bg-white rounded-lg shadow-lg p-6 sm:p-8 mb-6">
+        <div class="text-center">
+            <div class="text-4xl sm:text-5xl font-bold text-gray-800" id="digitalClock">00:00:00</div>
+            <div class="text-lg text-gray-600 mt-2" id="dateDisplay"></div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">报时设置</h3>
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <label for="enableAlarm" class="text-gray-700">启用报时</label>
+                    <input type="checkbox" id="enableAlarm" class="h-5 w-5 text-blue-500 rounded" checked>
+                </div>
+                <div>
+                    <label class="block text-gray-700 mb-2">报时间隔</label>
+                    <div class="flex flex-wrap gap-2">
+                        <label class="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-700 rounded-full cursor-pointer hover:bg-gray-200 transition-colors">
+                            <input type="radio" name="alarmInterval" value="5" class="h-4 w-4 text-blue-500">
+                            <span class="ml-2">5分钟</span>
+                        </label>
+                        <label class="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-700 rounded-full cursor-pointer hover:bg-gray-200 transition-colors">
+                            <input type="radio" name="alarmInterval" value="10" class="h-4 w-4 text-blue-500">
+                            <span class="ml-2">10分钟</span>
+                        </label>
+                        <label class="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-700 rounded-full cursor-pointer hover:bg-gray-200 transition-colors">
+                            <input type="radio" name="alarmInterval" value="15" class="h-4 w-4 text-blue-500">
+                            <span class="ml-2">15分钟</span>
+                        </label>
+                        <label class="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-700 rounded-full cursor-pointer hover:bg-gray-200 transition-colors">
+                            <input type="radio" name="alarmInterval" value="30" class="h-4 w-4 text-blue-500">
+                            <span class="ml-2">30分钟</span>
+                        </label>
+                        <label class="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-700 rounded-full cursor-pointer hover:bg-gray-200 transition-colors">
+                            <input type="radio" name="alarmInterval" value="60" class="h-4 w-4 text-blue-500" checked>
+                            <span class="ml-2">1小时</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <label for="voiceNotify" class="text-gray-700">语音报时</label>
+                    <input type="checkbox" id="voiceNotify" class="h-5 w-5 text-blue-500 rounded" checked>
+                </div>
+                <div class="flex items-center justify-between">
+                    <label for="systemNotify" class="text-gray-700">系统通知</label>
+                    <input type="checkbox" id="systemNotify" class="h-5 w-5 text-blue-500 rounded" checked>
+                </div>
+                <div class="flex items-center justify-between">
+                    <label for="showSeconds" class="text-gray-700">显示秒数</label>
+                    <input type="checkbox" id="showSeconds" class="h-5 w-5 text-blue-500 rounded" checked>
+                </div>
+                <div class="flex items-center justify-between">
+                    <label for="showDate" class="text-gray-700">显示日期</label>
+                    <input type="checkbox" id="showDate" class="h-5 w-5 text-blue-500 rounded" checked>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200">提醒事项</h3>
+            <div id="reminderList" class="space-y-2 mb-4 min-h-60 max-h-60 overflow-y-auto">
+                <!-- 提醒项将通过JavaScript动态添加 -->
+                <div class="text-center text-gray-500 py-6">
+                    暂无提醒
+                </div>
+            </div>
+            <button id="addReminder" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition-colors">
+                添加提醒
+            </button>
+        </div>
+    </div>
+
+    <!-- 添加提醒模态框 -->
+    <div id="reminderModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+            <div class="flex justify-between items-center p-4 border-b border-gray-200">
+                <h4 class="text-lg font-medium text-gray-800">添加提醒</h4>
+                <button type="button" id="closeReminderModal" class="text-gray-400 hover:text-gray-500 focus:outline-none">
+                    <i class="ri-close-line text-lg"></i>
+                </button>
+            </div>
+            <div class="p-4 space-y-4">
+                <div>
+                    <label for="reminderTime" class="block text-sm font-medium text-gray-700 mb-1">
+                    提醒时间
+                </label>
+                <input type="text" id="reminderTime" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" readonly>
+                </div>
+                <div>
+                    <label for="reminderText" class="block text-sm font-medium text-gray-700 mb-1">
+                        提醒内容
+                    </label>
+                    <input type="text" id="reminderText" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="请输入提醒内容">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                        提醒类型
+                    </label>
+                    <div class="flex items-center space-x-4">
+                        <label class="inline-flex items-center cursor-pointer">
+                            <input type="radio" name="reminderType" value="once" class="h-4 w-4 text-blue-500" checked>
+                            <span class="ml-2">仅一次</span>
+                        </label>
+                        <label class="inline-flex items-center cursor-pointer">
+                            <input type="radio" name="reminderType" value="daily" class="h-4 w-4 text-blue-500">
+                            <span class="ml-2">每天</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-end p-4 border-t border-gray-200 space-x-3">
+                <button type="button" id="cancelReminder" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors">
+                    取消
+                </button>
+                <button type="button" id="saveReminder" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 默认模态框 -->
+    <div id="DefaultModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md relative z-10">
+            <div class="p-5 border-b border-gray-200">
+                <h3 id="DefaultModalLabel" class="text-lg font-medium text-gray-900">提示</h3>
+            </div>
+            <div class="p-5">
+                <p id="DefaultModalText" class="text-gray-700"></p>
+            </div>
+            <div class="p-5 border-t border-gray-200 flex justify-end space-x-3">
+                <button id="DefaultModalCloseBtn" class="px-4 py-2 bg-gray-200 text-gray-800 font-medium rounded-md hover:bg-gray-300 transition-colors">关闭</button>
+                <button id="DefaultModalConfirmBtn" class="px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors">确认</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

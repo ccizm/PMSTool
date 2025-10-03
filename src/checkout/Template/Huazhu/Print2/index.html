@@ -1,0 +1,264 @@
+<!--
+    PMS-Tools - 打印页
+    作者：张贝达
+    网站：https://beida.xyz
+    邮箱：admin@beida.xyz
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: SimHei;
+            width: 100%;
+            padding: 16px;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            -khtml-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+            background-color: #fff;
+        }
+
+        .Print {
+            width: 72mm;
+            margin: auto;
+            background-color: #fff;
+            padding: 4px;
+            height: auto;
+            padding-bottom: 40px;
+            -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgba(99 99 100 / 60%);
+            box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgb(99 99 100 / 60%);
+        }
+
+        .Print-header {
+            text-align: center;
+            font-family: "Microsoft Yahei";
+            font-weight: 300;
+        }
+
+        .Print-header .title {
+            font-size: 16pt;
+        }
+
+        .Print-header .subtitle {
+            font-size: 14pt;
+        }
+
+        .Print-info .info-item {
+            font-size: 10.5pt;
+            padding: 6px 0;
+            border-bottom: 1px solid transparent;
+        }
+
+        .Print-info .info-item:hover,
+        .Print-header .title:hover,
+        .Print-header .subtitle:hover,
+        .Print-info .info-item:hover,
+        .Print-details table tr:hover,
+        .Print-signature .protocol:hover,
+        .Print-signature .signature:hover,
+        .Print-footer .footer-item:hover {
+            background-color: #337ab7;
+            color: #fff;
+            border-color: #66afe9;
+            -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgb(102 175 233 / 60%);
+            box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%), 0 0 8px rgb(102 175 233 / 60%);
+            transition: .15s;
+        }
+
+        .Print-details table {
+            width: 100%;
+        }
+
+        .Print-details table td,
+        .Print-details table th {
+            color: #000;
+            font-size: 10.5pt;
+            padding: 6px 0;
+        }
+
+        .Paymenthead,
+        .Consumptionfooter {
+            font-weight: bold;
+        }
+
+        .Print-signature,
+        .Print-footer {
+            font-size: 9pt;
+        }
+
+        .Print-signature .protocol {
+            text-indent: 2em;
+            line-height: 18px;
+        }
+
+        .Print-signature .signature {
+            padding: 10px;
+            text-align: right;
+        }
+
+        .Print-footer {
+            padding-top: 6px;
+        }
+
+        .Print-footer .col-6 {
+            float: left;
+            width: 50%;
+        }
+
+        .Print-footer .footer-item {
+            padding: 6px 0;
+        }
+
+        @media print {
+
+            body,
+            html {
+                font-family: SimHei;
+                margin: 0;
+                padding: 0;
+                background-color: #fff;
+            }
+
+            @page {
+                size: auto;
+                margin: 4mm;
+            }
+
+            .Print {
+                background-color: #fff;
+                padding: 0;
+                -webkit-box-shadow: none;
+                box-shadow: none;
+            }
+
+            .Print-header {
+                text-align: center;
+                font-family: "Microsoft Yahei";
+                font-weight: 300;
+                width: 100%;
+            }
+
+            .Print-header .title {
+                font-size: 16pt;
+            }
+
+            .Print-header .subtitle {
+                font-size: 14pt;
+            }
+
+            .Print-info .info-item {
+                font-size: 10.5pt;
+                padding: 6px 0;
+            }
+
+            .Print-details table {
+                width: 100%;
+            }
+
+            .Print-details table td,
+            .Print-details table th {
+                font-weight: 100;
+                font-size: 9.5pt;
+                text-align: center;
+            }
+
+            .Print-details thead tr {
+                border-bottom: 1pt solid #000;
+            }
+
+            .Paymenthead,
+            .Consumptionfooter {
+                font-weight: bold;
+                border-bottom: 1pt solid #000;
+                text-align: center;
+            }
+
+            .Print-signature,
+            .Print-footer {
+                font-size: 9pt;
+            }
+
+            .Print-signature .protocol {
+                text-indent: 2em;
+            }
+
+            .Print-signature .signature {
+                padding: 10px;
+                text-align: right;
+            }
+
+            .Print-footer .col-6 {
+                float: left;
+                width: 50%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="Print">
+        <div class="Print-header">
+            <div class="title">
+                酒店名称
+            </div>
+            <div class="subtitle">结账单</div>
+        </div>
+        <div class="Print-info">
+            <div class="info-item">单号：<span></span></div>
+            <div class="info-item">房号：<span></span></div>
+            <div class="info-item">姓名：<span></span></div>
+            <div class="info-item">入住时间：<span></span></div>
+            <div class="info-item">离店时间：<span></span></div>
+            <div class="info-item">打印时间：<span></span></div>
+            <div class="info-item">收&ensp;款&ensp;人：<span></span></div>
+        </div>
+        <div class="Print-details">
+            <table>
+                <thead>
+                    <tr>
+                        <th align="left">日期</th>
+                        <th>项目</th>
+                        <th>金额</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="Paymenthead">
+                        <td>付款合计</td>
+                        <td></td>
+                        <td>0.00</td>
+                    </tr>
+                    <tr class="Consumptionfooter">
+                        <td>消费合计</td>
+                        <td></td>
+                        <td>0.00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="Print-signature">
+            <div class="protocol">
+                本人同意对上述的款项承担个人责任、并在有关人士、公司或团体不能支付此账单款项的情况下，承担以上费用。如用中国境内发卡的信用卡支付，发卡行可能会将支付金额直接转换为发卡行所在国货币，转换之汇率将取决于银行之实时汇率，不在本酒店控制范围内。早餐及会员卡一经出售概不退换，总金额已含税和服务费。
+            </div>
+            <div class="signature">
+                宾客签名：_________
+            </div>
+        </div>
+        <div class="Print-footer">
+            <div class="footer-item">地址：<span class="adress"></span></div>
+            <div class="footer-item">电话：<span class="phone"></span></div>
+            <div class="footer-item col-6">邮编：<span></span></div>
+            <div class="footer-item col-6">传真：<span></span></div>
+        </div>
+    </div>
+    <script type="module" src="js/index.js"></script>
+</body>
+
+</html>

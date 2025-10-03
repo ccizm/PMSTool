@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/src/style.css">
+    <link rel="stylesheet" href="/node_modules/remixicon/fonts/remixicon.css">
+    <script type="module">
+        import { setPageTitle, initModal, createNavbar, recordPageVisit } from '/src/main.js';
+        import './pricecalc.js';
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 设置页面标题
+            setPageTitle();
+            // 创建统一栏
+            createNavbar();
+            // 初始化模态框
+            initModal();
+            // 记录页面访问
+            await recordPageVisit('pricecalc', '房价计算器');
+        });
+    </script>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 main-content">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- 左侧主要计算区域 -->
+            <div class="lg:col-span-3">
+                <div class="bg-white rounded-lg shadow-lg">
+                    <div class="p-4 rounded-t-lg border-b">
+                        <h3 class="text-xl font-bold mb-6 flex items-center justify-between text-gray-800">
+                            <div class="flex items-center">
+                                    <i class="ri-calculator-line text-lg mr-2 text-blue-500"></i>
+                                    房价计算器
+                                </div>
+                            <button id="guideButton"
+                                class="text-blue-500 hover:text-blue-700 p-2 rounded-full hover:bg-blue-50 transition-colors"
+                                title="使用引导">
+                                <i class="ri-question-mark text-base"></i>
+                            </button>
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="col-span-1">
+
+                                <label for="VipType" class="block text-sm font-medium text-gray-700 mb-1"><span
+                                        class="text-red-600">*</span> 选择会员：</label>
+                                <select class="input-field" id="VipType">
+                                    <!-- 会员等级选项将通过JavaScript动态添加 -->
+                                </select>
+                            </div>
+                            <div class="col-span-1">
+
+                                <label for="todayDate" class="block text-sm font-medium text-gray-700 mb-1"><span
+                                        class="text-red-600">*</span> 当天日期：</label>
+                                <div class="flex">
+                                    <button
+                                        class="bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-2 border border-gray-300 rounded-l-md"
+                                        type="button" id="todayDateLock">
+                                        <i class="ri-lock-line text-sm"></i>
+                                    </button>
+                                    <input type="text" class="input-field rounded-r-md" id="todayDate"
+                                        placeholder="请选择当天日期..." readonly>
+                                </div>
+                            </div>
+                            <div class="col-span-1">
+
+                                <label for="RoomPrice" class="block text-sm font-medium text-gray-700 mb-1"><span
+                                        class="text-red-600">*</span> 房型门市价：</label>
+                                <input type="text" class="input-field" id="RoomPrice" placeholder="请填写价格...">
+                            </div>
+                            <div class="col-span-1">
+
+                                <label for="additionalDiscount"
+                                    class="block text-sm font-medium text-gray-700 mb-1">额外折扣金额：</label>
+                                <input type="text" class="input-field" id="additionalDiscount" placeholder="例：88...">
+                            </div>
+                            <div class="col-span-1">
+
+                                <label for="couponAmount"
+                                    class="block text-sm font-medium text-gray-700 mb-1">优惠券立减：</label>
+                                <input type="text" class="input-field" id="couponAmount" placeholder="...">
+                            </div>
+                            <div class="col-span-1">
+
+                                <label for="additionalFees"
+                                    class="block text-sm font-medium text-gray-700 mb-1">附加费用：</label>
+                                <input type="text" class="input-field" id="additionalFees" placeholder="其他费用">
+                            </div>
+                            <div class="col-span-3 flex justify-end">
+                                    <button type="button" class="ml-auto btn btn-primary" id="addCalcOptions">
+                                        <i class="fa fa-plus mr-1"></i> 添加
+                                    </button>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 overflow-x-auto">
+                            <table id="priceTable" class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th
+                                            class="py-2 px-4 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            会员</th>
+                                        <th
+                                            class="py-2 px-4 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            当天日期</th>
+                                        <th
+                                            class="py-2 px-4 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            房型门市价</th>
+                                        <th
+                                            class="py-2 px-4 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            折上折</th>
+                                        <th
+                                            class="py-2 px-4 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            立减金额</th>
+                                        <th
+                                            class="py-2 px-4 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            附加金额</th>
+                                        <th
+                                            class="py-2 px-4 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-b-lg border-t border-gray-200">
+                        <div class="flex justify-end space-x-4">
+                            <button type="button" class="btn btn-danger" id="ClearCalcFrom">
+                                <i class="fa fa-trash mr-1"></i> 清空
+                            </button>
+                            <button class="btn btn-primary" id="priceCalcSubmit">
+                                <i class="fa fa-eye mr-1"></i> 预览
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧结果区域 -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-md">
+                    <div class="p-4 rounded-t-lg border-b">
+                        <h3 class="text-lg font-semibold text-gray-800">结果</h3>
+                    </div>
+                    <div class="p-4">
+                        <table class="min-w-full divide-y divide-gray-200" id="resultTable">
+                            <thead>
+                                <tr>
+                                    <th
+                                        class="py-2 px-4 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        日期</th>
+                                    <th
+                                        class="py-2 px-4 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        费用</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <div class="mt-4 space-y-2">
+                            <h4 class="text-gray-700">总金额：<span class="font-bold text-gray-900"
+                                    id="totalMoney1">/</span></h4>
+                            <h4 class="text-gray-700">优惠后：<span class="font-bold text-blue-600"
+                                    id="totalMoney2">/</span></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 默认提示模态框 -->
+    <div id="DefaultModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h4 class="text-lg font-medium text-gray-800" id="DefaultModalLabel"></h4>
+            </div>
+            <div class="p-4" id="DefaultModalText">
+                <!-- 模态框内容将在这里动态生成 -->
+            </div>
+            <div class="flex justify-end p-4 border-t">
+                <button type="button" class="btn btn-primary" id="DefaultModalCloseBtn" data-dismiss="modal">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

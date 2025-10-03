@@ -1,0 +1,35 @@
+{
+  "name": "hpms-tool",
+  "displayName": "酒店PMS工具箱",
+  "description": "酒店PMS系统辅助工具，这是您的专属工具箱，让工作更加高效便捷。包含结账单制作、房价计算器、常用信息查询等功能",
+  "author": "Siem",
+  "private": true,
+  "version": "1.25.1003.37370",
+  "type": "module",
+  "scripts": {
+    "clean": "node build-scripts/clean.js",
+    "convert-psd": "node build-scripts/convert-psd.js",
+    "build-zip": "node build-scripts/build-zip.js",
+    "update-version": "node build-scripts/update-version.js",
+    "build": "npm run update-version && npm run clean && npm run convert-psd && vite build && npm run build-zip"
+  },
+  "devDependencies": {
+    "@crxjs/vite-plugin": "^2.0.0-beta.23",
+    "archiver": "^7.0.1",
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.33",
+    "rollup-plugin-copy": "^3.5.0",
+    "tailwindcss": "^3.4.1",
+    "vite": "^5.0.11"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.18",
+    "driver.js": "^1.3.6",
+    "layui-laydate": "^5.3.1",
+    "marked": "^16.3.0",
+    "openai": "^5.23.1",
+    "psd.js": "^3.9.2",
+    "remixicon": "^4.6.0",
+    "sharp": "^0.34.4"
+  }
+}

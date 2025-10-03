@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI助手 - PMS工具箱</title>
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="/node_modules/remixicon/fonts/remixicon.css">
+  <script type="module">
+    import { setPageTitle, showModal, initModal, createNavbar, recordPageVisit } from '../main.js';
+    import './aiassistant.js';
+    import { marked } from 'marked';
+
+    // 配置marked
+    marked.setOptions({
+      breaks: true,        // 转换换行符为<br>
+      gfm: true,           // 使用GitHub风格的Markdown
+      headerIds: true,     // 添加id到标题元素
+      mangle: false,       // 不混淆电子邮件地址
+      sanitize: false,     // 不过滤HTML标签
+      highlight: function(code, lang) {
+        // 简单的代码高亮支持
+        return code;
+      }
+    });
+
+    // 全局共享marked实例
+    window.marked = marked;
+
+    // 页面加载完成后执行
+    document.addEventListener('DOMContentLoaded', async function () {
+      // 设置页面标题
+      setPageTitle();
+      // 创建统一导航栏
+      createNavbar();
+      // 初始化模态框
+      initModal();
+      // 记录页面访问
+      await recordPageVisit('aiassistant', 'AI助手');
+    });
+  </script>
+</head>
+
+<body class="bg-gray-100 h-screen flex flex-col">
+  <div class="container mx-auto px-4 main-content flex-grow flex flex-col">
+
+    <!-- AI助手聊天区域 -->
+    <div class="flex-grow flex flex-col bg-white rounded-lg shadow-lg overflow-hidden">
+      <!-- 页面标题 -->
+      <div class="p-6">
+        <h3 class="text-xl font-bold mb-2 flex items-center justify-between text-gray-800">
+          <div class="flex items-center">AI助手</div>
+          <button id="guideButton"
+            class="text-blue-500 hover:text-blue-700 p-2 rounded-full hover:bg-blue-50 transition-colors" title="使用引导">
+            <i class="ri-question-mark text-base"></i>
+          </button>
+        </h3>
+        <p class="text-gray-500 mt-1">智能对话助手，为您提供快捷服务</p>
+      </div>
+      <!-- 聊天内容区域 -->
+      <div id="chat-container" class="flex-grow p-4 overflow-y-auto">
+        <!-- 欢迎消息 -->
+        <div class="message-bot mb-4">
+          <div class="flex items-start">
+            <div class="bg-blue-100 p-2 rounded-full">
+              <i class="ri-chat-ai-line text-lg text-blue-600"></i>
+            </div>
+            <div class="ml-2 bg-gray-100 rounded-lg p-3 max-w-[80%]">
+              <p class="text-gray-800">欢迎使用AI助手！我是您的酒店智能客服助手，您可以下方选择我专业的类型，我会给您相应的专业回复。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- 输入区域 -->
+      <div class="border-t border-gray-200 p-4">
+        <div class="flex items-center mb-2">
+          <!-- 系统提示词选择 -->
+          <label for="system-prompt-select" class="block text-sm font-medium text-gray-700 mr-2">专业类型：</label>
+          <select id="system-prompt-select" class="select-field text-sm py-1 h-9">
+            <!-- 系统提示词选项将动态添加到这里 -->
+          </select>
+        </div>
+        <div class="flex items-end space-x-2">
+          <textarea id="message-input" class="input-field flex-grow resize-none h-20"
+            placeholder="请输入您的问题..."></textarea>
+          <button id="send-button" class="btn btn-primary h-10 whitespace-nowrap">
+            <i class="ri-send-plane-line text-base inline mr-1"></i>
+            发送
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 默认模态框 -->
+  <div id="DefaultModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg shadow-lg max-w-md w-full mx-4">
+      <div class="p-5">
+        <h3 id="DefaultModalTitle" class="text-lg font-semibold text-gray-800 mb-2">提示</h3>
+        <p id="DefaultModalText" class="text-gray-700"></p>
+      </div>
+      <div class="p-5 border-t border-gray-200 flex justify-end space-x-3">
+        <button id="DefaultModalCloseBtn"
+          class="px-4 py-2 bg-gray-200 text-gray-800 font-medium rounded-md hover:bg-gray-300 transition-colors">关闭</button>
+        <button id="DefaultModalConfirmBtn"
+          class="px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors">确认</button>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

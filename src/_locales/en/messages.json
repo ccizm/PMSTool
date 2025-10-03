@@ -1,0 +1,10 @@
+{
+  "extensionName": {
+    "message": "Hotel Management System Tools",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "Hotel management system auxiliary tools, providing checkout, reports and other functions",
+    "description": "Extension description"
+  }
+}

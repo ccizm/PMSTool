@@ -1,0 +1,66 @@
+{
+  "manifest_version": 3,
+  "name": "__MSG_extensionName__",
+  "version": "1.25.1003.37370",
+  "description": "__MSG_extensionDescription__",
+  "default_locale": "zh_CN",
+  "author": "",
+  "permissions": [
+    "storage",
+    "notifications",
+    "alarms",
+    "tts",
+    "idle"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "64": "icons/icon64.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "options_page": "src/options/options.html",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "64": "icons/icon64.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "src/content-script.js"
+      ]
+    }
+  ],
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "assets/*",
+        "src/index/index.html",
+        "src/checkout/checkout.html",
+        "src/checkout/Template/*",
+        "src/handoversheet/handoversheet.html",
+        "src/handoversheet/handoverPrint/handoverPrint.html",
+        "src/pricecalc/pricecalc.html",
+        "src/commonInfo/commonInfo.html",
+        "src/aiassistant/aiassistant.html",
+        "src/style.css"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}

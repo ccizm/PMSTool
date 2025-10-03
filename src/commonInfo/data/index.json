@@ -1,0 +1,19 @@
+{
+  "index": [
+    {
+      "id": "country-code",
+      "title": "国家/地区代码表",
+      "url": "/src/commonInfo/data/commonInfo/Country-code.json"
+    },
+    {
+      "id": "month-abbr",
+      "title": "月份英文缩写对照表",
+      "url": "/src/commonInfo/data/commonInfo/Monthabbr.json"
+    },
+    {
+      "id": "visa-free",
+      "title": "中外互免签证协定一览表",
+      "url": "/src/commonInfo/data/commonInfo/Visa-free.json"
+    }
+  ]
+}

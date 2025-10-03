@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>查常用信息 - PMS工具箱</title>
+    <link rel="stylesheet" href="/src/style.css">
+    <link rel="stylesheet" href="/node_modules/remixicon/fonts/remixicon.css">
+    <script type="module">
+        import { setPageTitle, showModal, initModal, createNavbar, recordPageVisit } from '../main.js';
+        import './commonInfo.js';
+
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', async function () {
+            // 设置页面标题
+            setPageTitle();
+            // 创建统一导航栏
+            createNavbar();
+            // 初始化模态框
+            initModal();
+            // 记录页面访问
+            await recordPageVisit('commonInfo', '查常用信息');
+        });
+    </script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 main-content">
+        <!-- 顶部提示区域 -->
+        <div class="mb-4" id="TopAlert"></div>
+
+        <!-- 主要内容区域 -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <h3 class="text-xl font-bold mb-6 flex items-center text-gray-800">
+                <i class="ri-book-open-line text-lg mr-2 text-blue-600"></i>
+                常用信息查询
+            </h3>
+
+            <!-- 左侧菜单和右侧内容区域 -->
+            <div class="flex flex-col lg:flex-row gap-6">
+                <!-- 左侧菜单 -->
+                <div class="lg:w-1/4">
+                    <!-- 系统预设信息 -->
+                    <div class="mb-4">
+                        <h4 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-3">系统预设信息</h4>
+                        <nav id="commenu" class="bg-white rounded-lg border border-gray-200">
+                            <ul class="space-y-1">
+                                <!-- 系统信息菜单项将通过JavaScript从index.json动态加载 -->
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <!-- 自定义信息 -->
+                    <div>
+                        <h4 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-3">自定义信息</h4>
+                        <nav class="bg-white rounded-lg border border-gray-200">
+                            <ul id="customInfoList" class="space-y-1">
+                                <li class="text-center text-gray-500 py-4">暂无自定义常用信息</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- 右侧内容区域 -->
+                <div class="lg:w-3/4">
+                    <!-- 标题栏 -->
+                    <div class="bg-white shadow-lg mb-4 rounded-lg border border-gray-200">
+                        <div class="px-4 py-3 flex items-center justify-between sm:px-6">
+                            <h2 id="TableInfoTitle" class="text-lg font-medium text-gray-900">查常用信息</h2>
+                        </div>
+                    </div>
+
+                    <!-- 内容展示区域 -->
+                    <div id="InfoContent" class="bg-white shadow-lg rounded-lg border border-gray-200 p-4 overflow-y-auto max-h-[60vh]">
+                        <p class="text-center text-gray-500 py-12">请选择您要查询的信息...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模态框 -->
+    <div id="DefaultModal" class="hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="DefaultModalLabel" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <!-- 遮罩层 -->
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <!-- 模态框内容 -->
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="DefaultModalLabel">
+                                提示
+                            </h3>
+                            <div class="mt-2" id="DefaultModalText">
+                                <!-- 模态框内容将在这里动态加载 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm" id="DefaultModalConfirmBtn">
+                        确定
+                    </button>
+                    <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" id="DefaultModalCloseBtn">
+                        取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

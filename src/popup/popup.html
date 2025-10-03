@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="/node_modules/remixicon/fonts/remixicon.css">
+  <script type="module">
+    import { setPageTitle, recordPageVisit } from '/src/main.js';
+    
+    document.addEventListener('DOMContentLoaded', async () => {
+      setPageTitle();
+      // 记录页面访问
+      await recordPageVisit('popup', '快捷入口');
+    });
+  </script>
+  <script type="module" src="./popup.js" defer></script>
+</head>
+<body class="bg-gray-100 w-64">
+  <div class="bg-white overflow-hidden">
+    <!-- 时钟显示区域 -->
+    <div class="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
+      <div class="text-center">
+        <div id="popupDigitalClock" class="text-3xl font-mono text-gray-800"></div>
+        <div id="popupDateDisplay" class="text-sm text-gray-600 mt-1"></div>
+      </div>
+    </div>
+    
+    <!-- 提醒列表区域 -->
+    <div class="p-3 border-b border-gray-200">
+      <h3 class="text-sm font-medium text-gray-700 mb-3">提醒事项</h3>
+      <div id="popupReminderList" class="max-h-32 overflow-y-auto">
+        <!-- 提醒列表将由JavaScript动态生成 -->
+      </div>
+    </div>
+    
+    <!-- 功能菜单（将通过JavaScript自动生成） -->
+    <div class="divide-y divide-gray-200">
+      <!-- 菜单将由popup.js动态生成 -->
+    </div>
+  </div>
+</body>
+</html>
