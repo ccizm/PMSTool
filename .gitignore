@@ -1,74 +1,3 @@
-<<<<<<< HEAD
-# 依赖目录
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-yarn.lock
-pnpm-lock.yaml
-
-# 构建输出目录
-dist/
-build/
-out/
-
-# 临时ZIP文件（构建过程中在根目录生成）
-hpms-tool-*.zip
-
-# 开发模式缓存目录
-.vite-temp/
-
-# Vite构建临时目录
-dist/.vite/
-icons/
-
-# 环境变量文件
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# 日志文件
-*.log
-logs/
-
-# 操作系统生成的文件
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# 编辑器生成的文件
-.vscode/
-.idea/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# 临时文件
-*.tmp
-*.temp
-.cache/
-
-# 测试覆盖率
-coverage/
-*.lcov
-.nyc_output/
-
-# TypeScript编译输出
-*.tsbuildinfo
-
-# Vite构建缓存
-vite.config.js.timestamp-*
-=======
 # 依赖目录
 node_modules/
 npm-debug.log*
@@ -139,5 +68,4 @@ coverage/
 
 # Vite构建缓存
 vite.config.js.timestamp-*
->>>>>>> b52b18715fab2a30ab416df3f574cce1267d8996
 vite.config.ts.timestamp-*
