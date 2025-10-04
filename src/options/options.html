@@ -25,7 +25,7 @@
 </head>
 
 <body class="bg-gray-100">
-  <div class="container mx-auto px-4 main-content">
+  <div class="main-content container mx-auto px-4 py-6">
     <!-- 两列布局 -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <!-- 第一列：标签页内容 -->
@@ -264,14 +264,14 @@
           <div class="tab-content hidden" id="ai">
             <h2 class="text-xl font-bold mb-4">AI大模型（OpenAI 兼容接口）</h2>
             <form id="AISettings" class="space-y-4 max-h-96 overflow-x-auto">
-              <div class="space-y-4">
+              <div class="space-y-4 p-1">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label for="AIModelType" class="block text-sm font-medium text-gray-700 mb-1">模型类型</label>
                     <input type="text" id="AIModelType" class="input-field" placeholder="例如：doubao-1-5-pro-32k-250115">
                   </div>
                   <div>
-                    <label for="APIKey" class="block text-sm font-medium text-gray-700 mb-1">API Key （<a href="https://apikey.pmstool.beida.xyz" target="_blank" class="text-blue-600 hover:text-blue-800">获取API Key</a>）</label>
+                    <label for="APIKey" class="block text-sm font-medium text-gray-700 mb-1">API Key （<span id="GetAPIKeyLink" class="text-blue-600 hover:text-blue-800 cursor-pointer">获取API Key</span>）</label>
                     <input type="password" id="APIKey" class="input-field">
                   </div>
                 </div>

@@ -4,7 +4,7 @@
   "description": "酒店PMS系统辅助工具，这是您的专属工具箱，让工作更加高效便捷。包含结账单制作、房价计算器、常用信息查询等功能",
   "author": "Siem",
   "private": true,
-  "version": "1.25.1003.2052",
+  "version": "1.251004.1515",
   "type": "module",
   "scripts": {
     "clean": "node build-scripts/clean.js",

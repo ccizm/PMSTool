@@ -1,4 +1,4 @@
-import { getSettings, saveSettings, getDefaultSettings, showModal } from '../main.js';
+import { getSettings, saveSettings, getDefaultSettings, showModal, showTopAlert } from '../main.js';
 
 // 导入OpenAI库
 import OpenAI from 'openai';
@@ -129,8 +129,8 @@ async function sendMessage() {
   sendButton.innerHTML = '<i class="ri-loader-5-line text-base animate-spin inline mr-1"></i>发送中...'
   
   try {
-    // 模拟AI回复
-    await simulateAIResponse(message);
+    // 获取AI回复
+    await getAIResponse(message);
   } catch (error) {
     console.error('发送消息失败:', error);
     addMessageToChat('bot', '抱歉，处理您的请求时出现错误。请稍后再试。');
@@ -318,8 +318,8 @@ async function callAIAPIStream(messages, aiSettings) {
   return fullContent;
 }
 
-// 模拟AI回复 - 现在改为调用真实API
-async function simulateAIResponse(userMessage) {
+// 获取AI回复
+async function getAIResponse(userMessage) {
   // 调用真实的AI API获取回复
   const aiResponse = await callAIAPI(userMessage);
   
@@ -410,10 +410,10 @@ function addMessageToChat(sender, content) {
 // 复制到剪贴板
 function copyToClipboard(text) {
   navigator.clipboard.writeText(text).then(() => {
-    showModal('成功', '内容已复制到剪贴板');
+    showTopAlert('内容已复制到剪贴板', 'success');
   }).catch(err => {
     console.error('复制失败:', err);
-    showModal('错误', '复制失败，请手动复制');
+    showTopAlert('复制失败，请手动复制', 'error');
   });
 }
 

@@ -206,7 +206,6 @@ body {
 
 /* 页面主内容区域 - 保持与导航栏的间距 */
 .main-content {
-  padding-top: 2rem;
   padding-bottom: 2rem;
   min-height: calc(100vh - 64px);
   /* 考虑导航栏高度 */

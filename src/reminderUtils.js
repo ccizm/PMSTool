@@ -11,6 +11,11 @@ export function getSortedTodayReminders(reminders) {
     const today = new Date();
     const todayStr = today.toDateString();
     
+    // 如果reminders未定义或为空数组，返回空数组
+    if (!reminders || reminders.length === 0) {
+        return [];
+    }
+    
     // 过滤今日提醒和每日提醒(daily)
     return reminders.filter(reminder => {
         // 每日提醒(daily)始终显示

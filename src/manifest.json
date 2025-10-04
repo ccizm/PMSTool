@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "__MSG_extensionName__",
-  "version": "1.25.1003.2052",
+  "version": "1.251004.1515",
   "description": "__MSG_extensionDescription__",
   "default_locale": "zh_CN",
   "author": "",
@@ -56,7 +56,10 @@
         "src/pricecalc/pricecalc.html",
         "src/commonInfo/commonInfo.html",
         "src/aiassistant/aiassistant.html",
-        "src/style.css"
+        "src/style.css",
+        "src/static/remind.svg",
+        "src/static/WechatCode.jpg",
+        "src/static/PaymentCode.jpg"
       ],
       "matches": [
         "<all_urls>"

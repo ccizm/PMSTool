@@ -465,8 +465,7 @@ function showNotification(date) {
         if (Notification.permission === 'granted') {
             const timeStr = date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
             new Notification('时钟报时器', {
-                body: `现在是${timeStr}`,
-                icon: '/static/remind.svg'
+                body: `现在是${timeStr}`
             });
         } else if (Notification.permission !== 'denied') {
             Notification.requestPermission().then(function (permission) {
@@ -557,8 +556,7 @@ function clearReminderAlarm(reminderId) {
 function showReminderNotification(reminder) {
     if ('Notification' in window && Notification.permission === 'granted') {
         new Notification('提醒', {
-            body: reminder.text,
-            icon: '/static/remind.svg'
+            body: reminder.text
         });
     }
 

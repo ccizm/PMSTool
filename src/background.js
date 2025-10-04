@@ -534,7 +534,7 @@ function performAlarmClock() {
               type: 'basic',
               title: '时钟报时器',
               message: `现在是${timeStr}`,
-              iconUrl: '../static/remind.svg',
+              iconUrl: chrome.runtime.getURL('src/static/remind.svg'),
               requireInteraction: true
             }, (notificationId) => {
               if (chrome.runtime.lastError) {
@@ -725,7 +725,7 @@ function showNotification(reminder) {
             type: 'basic',
             title: '提醒事项',
             message: reminder.text,
-            iconUrl: '../static/remind.svg',
+            iconUrl: chrome.runtime.getURL('src/static/remind.svg'),
             requireInteraction: true // 保持通知可见直到用户关闭
           }, (notificationId) => {
             if (chrome.runtime.lastError) {

@@ -633,6 +633,88 @@ export function addDayObj(date, days) {
  * @param {string} options.confirmText - 确认按钮文本
  * @param {Function} options.onConfirm - 确认按钮点击回调
  */
+/**
+ * 显示顶部悬浮提示
+ * @param {string} message - 提示消息内容
+ * @param {string} type - 提示类型（info、success、warning、error）
+ * @param {number} duration - 提示显示时长（毫秒）
+ */
+export function showTopAlert(message, type = 'info', duration = 3000) {
+  // 移除已存在的悬浮提示
+  const existingAlert = document.getElementById('floating-top-alert');
+  if (existingAlert) {
+    existingAlert.remove();
+  }
+
+  // 创建悬浮提示容器
+  const alertDiv = document.createElement('div');
+  alertDiv.id = 'floating-top-alert';
+  alertDiv.style.position = 'fixed';
+  alertDiv.style.top = '20px';
+  alertDiv.style.left = '50%';
+  alertDiv.style.transform = 'translateX(-50%)';
+  alertDiv.style.zIndex = '10000';
+  alertDiv.style.width = '90%';
+  alertDiv.style.maxWidth = '500px';
+  alertDiv.style.opacity = '0';
+  alertDiv.style.transition = 'opacity 0.3s ease-in-out';
+  alertDiv.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+  alertDiv.style.borderRadius = '8px';
+  alertDiv.style.padding = '12px';
+  alertDiv.style.margin = '0 auto';
+  alertDiv.style.display = 'flex';
+  alertDiv.style.alignItems = 'center';
+  alertDiv.style.justifyContent = 'space-between';
+  alertDiv.style.backdropFilter = 'blur(8px)';
+  alertDiv.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+
+  // 根据类型设置样式
+  const icon = type === 'info' ? 'ℹ️' : type === 'success' ? '✅' : type === 'warning' ? '⚠️' : '❌';
+  
+  if (type === 'info') {
+    alertDiv.style.backgroundColor = 'rgba(219, 234, 254, 0.9)';
+    alertDiv.style.color = '#1e40af';
+  } else if (type === 'success') {
+    alertDiv.style.backgroundColor = 'rgba(209, 250, 229, 0.9)';
+    alertDiv.style.color = '#065f46';
+  } else if (type === 'warning') {
+    alertDiv.style.backgroundColor = 'rgba(254, 243, 199, 0.9)';
+    alertDiv.style.color = '#92400e';
+  } else {
+    alertDiv.style.backgroundColor = 'rgba(254, 226, 226, 0.9)';
+    alertDiv.style.color = '#991b1b';
+  }
+
+  // 设置提示内容
+  alertDiv.innerHTML = `
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span style="font-size: 18px;">${icon}</span>
+      <span style="font-size: 14px;">${message}</span>
+    </div>
+    <button type="button" style="background: none; border: none; cursor: pointer; padding: 4px; color: inherit;" onclick="document.getElementById('floating-top-alert').remove()">
+      <i class="ri-close-line text-sm"></i>
+    </button>
+  `;
+
+  // 添加到页面
+  document.body.appendChild(alertDiv);
+
+  // 显示提示
+  setTimeout(() => {
+    alertDiv.style.opacity = '1';
+  }, 10);
+
+  // 自动隐藏
+  setTimeout(() => {
+    alertDiv.style.opacity = '0';
+    setTimeout(() => {
+      if (document.getElementById('floating-top-alert')) {
+        document.getElementById('floating-top-alert').remove();
+      }
+    }, 300);
+  }, duration);
+}
+
 export function showModal(title, message, options = {}) {
   const modal = document.getElementById('DefaultModal');
 

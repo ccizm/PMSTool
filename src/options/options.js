@@ -6,6 +6,7 @@
 // 导入公共函数
 import { getSettings, saveSettings, getDefaultSettings, showModal, showConfirmModal, initModal, options } from '../main.js'
 
+
 // 页面加载完成后执行
 document.addEventListener('DOMContentLoaded', async () => {
   console.log('PMS工具设置页面已加载');
@@ -693,10 +694,14 @@ function displayExtensionInfo() {
     const aboutElement = document.getElementById('AboutExtensions');
     if (aboutElement) {
       aboutElement.innerHTML = `
-        <p><strong>名称：</strong>${manifest.name || 'PMS工具'}</p>
-        <p><strong>版本：</strong>${manifest.version || '0.1.0'}</p>
-        <p><strong>作者：</strong>${manifest.author || '未知'}</p>
+        <p><strong>名称：</strong>${manifest.name || '酒店PMS工具箱'}</p>
+        <p><strong>版本：</strong>${manifest.version || 'null'}</p>
+        <p><strong>作者：</strong>${manifest.author || 'Siem'}</p>
         <p><strong>网址：</strong><a href="https://pmstool.beida.xyz" target="_blank" class="text-blue-600 hover:text-blue-800">https://pmstool.beida.xyz</a></p>
+        <div class="mt-4 text-center">
+          <p class="mb-2 text-gray-700">感谢您使用本工具！希望得到您的支持和鼓励。</p>
+          <img src="/src/static/PaymentCode.jpg" alt="支付码" class="w-48 rounded-md hover:shadow-lg m-auto">
+        </div>
       `;
     }
     
@@ -1152,6 +1157,17 @@ function initAISettings() {
   
   // 初始化系统提示词列表
   initSystemPrompts();
+
+  // 添加API Key链接的点击事件处理逻辑
+  const apiKeyLink = document.getElementById('GetAPIKeyLink');
+  if (apiKeyLink) {
+    apiKeyLink.addEventListener('click', function() {
+      // 使用showModal函数显示包含微信图片和提示信息的模态框
+      showModal('API Key 获取说明', 
+        '<div style="text-align: center;"><p>AI助手默认<b>支持 OpenAI 兼容接口</b>，理论上市面上大部分 AI模型都可以使用。这里 API Key <b>不免费提供</b>，大模型 API 获取及使用方法可自行百度。<br><br>如果你为了节省时间，欢迎您联系我<b>知识付费</b>并购买 API key。<br><img src="/src/static/WechatCode.jpg" alt="微信联系方式" style="max-width: 200px; height: auto; margin: 15px auto;"><h3><b>微信号：SiemYan</b></h3><br><br>免费工具开发不易，感谢理解与支持！</div>'
+      );
+    });
+  }
 }
 
 /**
