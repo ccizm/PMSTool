@@ -1,7 +1,7 @@
 # 酒店PMS工具箱 (HPMS Tool)
 
 ![版本](https://img.shields.io/badge/版本-1.25.1003-blue)
-![许可证](https://img.shields.io/badge/许可证-MIT-green)
+![许可证](https://img.shields.io/badge/许可证-Apache--2.0-green)
 
 酒店PMS系统辅助工具，这是您的专属工具箱，让工作更加高效便捷。
 
