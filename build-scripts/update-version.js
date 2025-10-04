@@ -42,7 +42,7 @@ if (versionParts.length >= 3 && versionParts[1] + versionParts[2] === datePart) 
 } else {
   // 如果不是今天的版本，创建新版本，使用当前时分作为修改次数
   const yearPart = String(year).slice(2); // 25 格式
-  newVersion = `${majorVersion}.${yearPart}${month}${day}.${timestamp}`;
+  newVersion = `${majorVersion}.${yearPart}.${month}${day}.${timestamp}`;
 }
 
 // 更新package.json中的版本号
